@@ -407,42 +407,34 @@ public class Utils {
         return mc.thePlayer.moveForward != 0.0F || mc.thePlayer.moveStrafing != 0.0F;
     }
 
-    public static void aim(Entity en, float ps, boolean pc) {
+    public static void aim(Entity en, float ps) {
         if (en != null) {
             float[] t = gr(en);
+
             if (t != null) {
                 float y = t[0];
                 float p = t[1] + 4.0F + ps;
-                if (pc) {
-                    mc.getNetHandler().addToSendQueue(new C05PacketPlayerLook(y, p, mc.thePlayer.onGround));
-                } else {
-                    mc.thePlayer.rotationYaw = y;
-                    mc.thePlayer.rotationPitch = p;
-                }
-            }
 
+                mc.thePlayer.rotationYaw = y;
+                mc.thePlayer.rotationPitch = p;
+            }
         }
     }
 
-    public static float[] gr(Entity q) {
-        if (q == null) {
+    public static float[] gr(Entity entity) {
+        if (entity == null) {
             return null;
-        } else {
-            double diffX = q.posX - mc.thePlayer.posX;
-            double diffY;
-            if (q instanceof EntityLivingBase) {
-                EntityLivingBase en = (EntityLivingBase) q;
-                diffY = en.posY + (double) en.getEyeHeight() * 0.9D - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
-            } else {
-                diffY = (q.getEntityBoundingBox().minY + q.getEntityBoundingBox().maxY) / 2.0D - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
-            }
-
-            double diffZ = q.posZ - mc.thePlayer.posZ;
-            double dist = MathHelper.sqrt_double(diffX * diffX + diffZ * diffZ);
-            float yaw = (float) (Math.atan2(diffZ, diffX) * 180.0D / 3.141592653589793D) - 90.0F;
-            float pitch = (float) (-(Math.atan2(diffY, dist) * 180.0D / 3.141592653589793D));
-            return new float[]{mc.thePlayer.rotationYaw + MathHelper.wrapAngleTo180_float(yaw - mc.thePlayer.rotationYaw), mc.thePlayer.rotationPitch + MathHelper.wrapAngleTo180_float(pitch - mc.thePlayer.rotationPitch)};
         }
+
+        double x = entity.posX - mc.thePlayer.posX;
+        double z = entity.posZ - mc.thePlayer.posZ;
+        double y = entity.posY + entity.getEyeHeight() * 0.9 - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+
+        return new float[]{mc.thePlayer.rotationYaw + MathHelper.wrapAngleTo180_float((float) (Math.atan2(z, x) * 57.295780181884766) - 90.0f - mc.thePlayer.rotationYaw), clamp(mc.thePlayer.rotationPitch + MathHelper.wrapAngleTo180_float((float) (-(Math.atan2(y, MathHelper.sqrt_double(x * x + z * z)) * 57.295780181884766)) - mc.thePlayer.rotationPitch) + 3.0f)};
+    }
+
+    private static float clamp(float n) {
+        return MathHelper.clamp_float(n, -90.0f, 90.0f);
     }
 
     public static double n(Entity en) {
@@ -541,12 +533,6 @@ public class Utils {
         return str.replace("§k", "").replace("§l", "").replace("§m", "").replace("§n", "").replace("§o", "").replace("§r", "");
     }
 
-    public static boolean ilc() {
-        if (ModuleManager.autoClicker.isEnabled()) {
-            return Mouse.isButtonDown(0);
-        } else return CPSCalculator.f() > 1 && System.currentTimeMillis() - CPSCalculator.LL < 300L;
-    }
-
     public static long getDifference(long n, long n2) {
         return Math.abs(n2 - n);
     }
@@ -635,51 +621,6 @@ public class Utils {
             }
         }
         return sb.toString();
-    }
-
-    public static List<String> gsl() {
-        List<String> lines = new ArrayList();
-        if (mc.theWorld == null) {
-            return lines;
-        } else {
-            Scoreboard scoreboard = mc.theWorld.getScoreboard();
-            if (scoreboard == null) {
-                return lines;
-            } else {
-                ScoreObjective objective = scoreboard.getObjectiveInDisplaySlot(1);
-                if (objective == null) {
-                    return lines;
-                } else {
-                    Collection<Score> scores = scoreboard.getSortedScores(objective);
-                    List<Score> list = new ArrayList();
-                    Iterator var5 = scores.iterator();
-
-                    Score score;
-                    while (var5.hasNext()) {
-                        score = (Score) var5.next();
-                        if (score != null && score.getPlayerName() != null && !score.getPlayerName().startsWith("#")) {
-                            list.add(score);
-                        }
-                    }
-
-                    if (list.size() > 15) {
-                        scores = Lists.newArrayList(Iterables.skip(list, scores.size() - 15));
-                    } else {
-                        scores = list;
-                    }
-
-                    var5 = scores.iterator();
-
-                    while (var5.hasNext()) {
-                        score = (Score) var5.next();
-                        ScorePlayerTeam team = scoreboard.getPlayersTeam(score.getPlayerName());
-                        lines.add(ScorePlayerTeam.formatPlayerName(team, score.getPlayerName()));
-                    }
-
-                    return lines;
-                }
-            }
-        }
     }
 
     public static void rsa() {

@@ -8,6 +8,8 @@ import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import org.lwjgl.input.Mouse;
+
 public class AimAssist extends Module {
     private SliderSetting speed;
     private SliderSetting fov;
@@ -33,23 +35,24 @@ public class AimAssist extends Module {
     public void onUpdate() {
         if (mc.currentScreen == null && mc.inGameHasFocus) {
             if (!weaponOnly.isToggled() || Utils.holdingWeapon()) {
-                if (!clickAim.isToggled() || Utils.ilc()) {
-                    Entity en = this.getEnemy();
-                    if (en != null) {
-                        if (Raven.debugger) {
-                            Utils.sendMessage(this.getName() + " &e" + en.getName());
-                        }
-                        if (blatantMode.isToggled()) {
-                            Utils.aim(en, 0.0F, false);
-                        } else {
-                            double n = Utils.n(en);
-                            if (n > 1.0D || n < -1.0D) {
-                                float val = (float) (-(n / (101.0D - (speed.getInput()))));
-                                mc.thePlayer.rotationYaw += val;
-                            }
+                if (clickAim.isToggled() && !Mouse.isButtonDown(0)) {
+                    return;
+                }
+
+                Entity en = this.getEnemy();
+                if (en != null) {
+                    if (Raven.debugger) {
+                        Utils.sendMessage(this.getName() + " &e" + en.getName());
+                    }
+                    if (blatantMode.isToggled()) {
+                        Utils.aim(en, 0.0F);
+                    } else {
+                        double n = Utils.n(en);
+                        if (n > 1.0D || n < -1.0D) {
+                            float val = (float) (-(n / (101.0D - (speed.getInput()))));
+                            mc.thePlayer.rotationYaw += val;
                         }
                     }
-
                 }
             }
         }
