@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class Scaffold extends Module { // from b4 :)
+public class Scaffold extends Module {
     private SliderSetting motion;
     private SliderSetting rotation;
     private SliderSetting fastScaffold;

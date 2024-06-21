@@ -46,7 +46,7 @@ public class HitBox extends Module {
     @SubscribeEvent
     public void m(MouseEvent e) {
         if (Utils.nullCheck()) {
-            if (e.button != 0 || !e.buttonstate || !Utils.nullCheck() || multiplier.getInput() == 1 || mc.thePlayer.isBlocking() || mc.currentScreen != null) {
+            if (multiplier.getInput() == 1 || mc.thePlayer.isBlocking() || mc.currentScreen != null) {
                 return;
             }
             if (weaponOnly.isToggled() && !Utils.holdingWeapon()) {

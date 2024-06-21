@@ -53,7 +53,7 @@ public class ModuleManager {
     public static Scaffold scaffold;
 
     public void register() {
-        this.addModule(autoClicker = new AutoClicker());
+        this.addModule(autoClicker = new LeftClicker());
         this.addModule(new LongJump());
         this.addModule(new AimAssist());
         this.addModule(new Blink());
@@ -85,7 +85,6 @@ public class ModuleManager {
         this.addModule(noCameraClip = new NoCameraClip());
         this.addModule(new Sprint());
         this.addModule(timer = new Timer());
-        this.addModule(new AutoJump());
         this.addModule(new AutoPlace());
         this.addModule(fastPlace = new FastPlace());
         this.addModule(noFall = new NoFall());
@@ -94,7 +93,9 @@ public class ModuleManager {
         this.addModule(antiBot = new AntiBot());
         this.addModule(antiShuffle = new AntiShuffle());
         this.addModule(new Chams());
+        this.addModule(new TriggerBot());
         this.addModule(new ChestESP());
+        this.addModule(new RightClicker());
         this.addModule(new Nametags());
         this.addModule(playerESP = new PlayerESP());
         this.addModule(new Tracers());

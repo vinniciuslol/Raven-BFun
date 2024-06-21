@@ -16,6 +16,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Mouse;
 
 import java.util.List;
@@ -43,10 +44,9 @@ public class Reach extends Module {
     }
 
     @SubscribeEvent
-    public void e(MouseEvent ev) {
-        if (ev.button >= 0 && ev.buttonstate && Utils.nullCheck() && (!ModuleManager.autoClicker.isEnabled() || !AutoClicker.leftClick.isToggled() || !Mouse.isButtonDown(0))) {
+    public void e(TickEvent ev) {
+        if (Utils.nullCheck())
             call();
-        }
     }
 
     public static boolean call() {

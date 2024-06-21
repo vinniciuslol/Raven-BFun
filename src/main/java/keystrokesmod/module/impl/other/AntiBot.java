@@ -51,9 +51,7 @@ public class AntiBot extends Module {
         if (!ModuleManager.antiBot.isEnabled()) {
             return false;
         }
-        if (Freecam.freeEntity != null && Freecam.freeEntity == entity) {
-            return true;
-        }
+
         if (!(entity instanceof EntityPlayer)) {
             return true;
         }

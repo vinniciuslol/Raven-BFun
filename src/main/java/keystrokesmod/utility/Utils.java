@@ -5,8 +5,6 @@ import com.google.common.collect.Lists;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.client.Settings;
-import keystrokesmod.module.impl.ghost.AutoClicker;
-import keystrokesmod.module.impl.minigames.DuelsStats;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -57,7 +55,7 @@ public class Utils {
     }
 
     public static String getServerName() {
-        return DuelsStats.nick.isEmpty() ? mc.thePlayer.getName() : DuelsStats.nick;
+        return mc.thePlayer.getName();
     }
 
     public static boolean overVoid(double posX, double posY, double posZ) {
@@ -71,7 +69,7 @@ public class Utils {
 
     public static List<NetworkPlayerInfo> getTablist() {
         final ArrayList<NetworkPlayerInfo> list = new ArrayList<>(mc.getNetHandler().getPlayerInfoMap());
-        removeDuplicates((ArrayList) list);
+        removeDuplicates(list);
         list.remove(mc.getNetHandler().getPlayerInfo(mc.thePlayer.getUniqueID()));
         return list;
     }
@@ -584,7 +582,7 @@ public class Utils {
 
     public static boolean ilc() {
         if (ModuleManager.autoClicker.isEnabled()) {
-            return AutoClicker.leftClick.isToggled() && Mouse.isButtonDown(0);
+            return Mouse.isButtonDown(0);
         } else return CPSCalculator.f() > 1 && System.currentTimeMillis() - CPSCalculator.LL < 300L;
     }
 

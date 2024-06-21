@@ -22,7 +22,7 @@ public class NoSlow extends Module {
     public static ButtonSetting disablePotions;
     public static ButtonSetting swordOnly;
     public static ButtonSetting vanillaSword;
-    private String[] modes = new String[]{"Vanilla" "SwitchItem"};
+    private String[] modes = new String[]{"Vanilla", "SwitchItem"};
     private boolean postPlace;
 
     public NoSlow() {

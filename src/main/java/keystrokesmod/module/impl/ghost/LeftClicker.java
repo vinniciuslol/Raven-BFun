@@ -2,7 +2,6 @@ package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.ButtonSetting;
-import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Reflection;
 import keystrokesmod.utility.Utils;
@@ -19,13 +18,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-public class AutoClicker extends Module {
+public class LeftClicker extends Module {
     public SliderSetting minCPS;
     public SliderSetting maxCPS;
     public SliderSetting jitter;
     public ButtonSetting inventoryFill;
     public ButtonSetting weaponOnly;
-    public ButtonSetting blocksOnly;
     private Random rand = null;
     private Method gs;
     private long i;
@@ -34,23 +32,21 @@ public class AutoClicker extends Module {
     private long l;
     private double m;
     private boolean n;
-    private boolean hol;
 
-    public AutoClicker() {
-        super("AutoClicker", category.ghost, 0);
+    public LeftClicker() {
+        super("Left Clicker", category.ghost, 0);
         this.registerSetting(minCPS = new SliderSetting("Min CPS", 9.0, 1.0, 20.0, 0.5));
         this.registerSetting(maxCPS = new SliderSetting("Max CPS", 12.0, 1.0, 20.0, 0.5));
         this.registerSetting(jitter = new SliderSetting("Jitter", 0.0, 0.0, 3.0, 0.1));
         this.registerSetting(inventoryFill = new ButtonSetting("Inventory fill", false));
         this.registerSetting(weaponOnly = new ButtonSetting("Weapon only", false));
-        this.registerSetting(blocksOnly = new ButtonSetting("Blocks only", true));
 
         try {
             this.gs = GuiScreen.class.getDeclaredMethod("func_73864_a", Integer.TYPE, Integer.TYPE, Integer.TYPE);
         } catch (Exception var4) {
             try {
                 this.gs = GuiScreen.class.getDeclaredMethod("mouseClicked", Integer.TYPE, Integer.TYPE, Integer.TYPE);
-            } catch (Exception var3) {
+            } catch (Exception ignored) {
             }
         }
 
@@ -71,7 +67,6 @@ public class AutoClicker extends Module {
     public void onDisable() {
         this.i = 0L;
         this.j = 0L;
-        this.hol = false;
     }
 
     public void guiUpdate() {
@@ -82,9 +77,8 @@ public class AutoClicker extends Module {
     public void onRenderTick(RenderTickEvent ev) throws InvocationTargetException, IllegalAccessException {
         if (ev.phase != Phase.END && Utils.nullCheck() && !mc.thePlayer.isEating()) {
             if (mc.currentScreen == null && mc.inGameHasFocus) {
-                if (weaponOnly.isToggled() && !Utils.holdingWeapon()) {
+                if (weaponOnly.isToggled() && !Utils.holdingWeapon())
                     return;
-                }
 
                 if (Mouse.isButtonDown(0)) {
                     if (Mouse.isButtonDown(1))
@@ -134,7 +128,7 @@ public class AutoClicker extends Module {
 
         if (this.j > 0L && this.i > 0L) {
             if (System.currentTimeMillis() > this.i) {
-                Reflection.clickMouse.invoke(mc);
+                Reflection.clickMouse();
             }
         } else {
             this.gd();

@@ -7,7 +7,6 @@ import keystrokesmod.event.PreUpdateEvent;
 import keystrokesmod.event.ReceivePacketEvent;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.minigames.BedWars;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.*;
@@ -103,10 +102,7 @@ public class BedAura extends Module {
         if (!Utils.nullCheck()) {
             return;
         }
-        if (ModuleManager.bedwars != null && ModuleManager.bedwars.isEnabled() && BedWars.whitelistOwnBed.isToggled() && !BedWars.outsideSpawn) {
-            reset(true);
-            return;
-        }
+
         if (!mc.thePlayer.capabilities.allowEdit || mc.thePlayer.isSpectator()) {
             reset(true);
             return;

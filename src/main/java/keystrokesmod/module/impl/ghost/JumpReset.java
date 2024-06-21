@@ -9,13 +9,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class JumpReset extends Module {
     private SliderSetting chance;
-    private SliderSetting motion;
     private boolean jump;
 
     public JumpReset() {
         super("Jump Reset", category.ghost);
         this.registerSetting(chance = new SliderSetting("Chance", 80, 0, 100, 1, "%"));
-        this.registerSetting(motion = new SliderSetting("Jump motion", 0.42, 0, 1, 0.01));
     }
 
     public void onDisable() {
@@ -50,16 +48,5 @@ public class JumpReset extends Module {
                 jump = false;
             }
         }
-    }
-
-    @SubscribeEvent
-    public void onJump(JumpEvent e) {
-        if (!Utils.nullCheck() || !jump) {
-            return;
-        }
-        if (motion.getInput() != 0.42) {
-            e.setMotionY((float) motion.getInput());
-        }
-        jump = false;
     }
 }

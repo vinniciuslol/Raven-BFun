@@ -89,11 +89,7 @@ public class BurstClicker extends Module {
         if (r) {
             Reflection.rightClick();
         } else {
-            int key = mc.gameSettings.keyBindAttack.getKeyCode();
-            KeyBinding.setKeyBindState(key, st);
-            if (st) {
-                KeyBinding.onTick(key);
-            }
+            Reflection.clickMouse();
         }
 
         Reflection.setButton(r ? 1 : 0, st);
