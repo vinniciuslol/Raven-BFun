@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ItemESP extends Module { // entirely skidded from raven b4 source leak
+public class ItemESP extends Module {
     private ButtonSetting renderIron, renderGold;
 
     public ItemESP() {

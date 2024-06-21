@@ -567,13 +567,6 @@ public class ScriptDefaults {
             return getModule(moduleName).isEnabled();
         }
 
-        public Entity getKillAuraTarget() {
-            if (KillAura.target == null) {
-                return null;
-            }
-            return new Entity(KillAura.target);
-        }
-
         public Vec3 getBedAuraPosition() {
             BlockPos blockPos = ModuleManager.bedAura.currentBlock;
             if (ModuleManager.bedAura == null || !ModuleManager.bedAura.isEnabled() || ModuleManager.bedAura.currentBlock == null) {

@@ -1,8 +1,8 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.Raven;
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
@@ -19,7 +19,7 @@ public class AimAssist extends Module {
     private ButtonSetting ignoreTeammates;
 
     public AimAssist() {
-        super("AimAssist", category.combat, 0);
+        super("AimAssist", category.ghost, 0);
         this.registerSetting(speed = new SliderSetting("Speed", 45.0D, 1.0D, 100.0D, 1.0D));
         this.registerSetting(fov = new SliderSetting("FOV", 90.0D, 15.0D, 180.0D, 1.0D));
         this.registerSetting(distance = new SliderSetting("Distance", 4.5D, 1.0D, 10.0D, 0.5D));

@@ -1,4 +1,4 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
@@ -6,7 +6,6 @@ import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.RotationUtils;
 import keystrokesmod.utility.Utils;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItemFrame;
@@ -30,7 +29,7 @@ public class Reach extends Module {
     public static ButtonSetting hitThroughBlocks;
 
     public Reach() {
-        super("Reach", Module.category.combat, 0);
+        super("Reach", category.ghost, 0);
         this.registerSetting(min = new SliderSetting("Min", 3.1D, 3.0D, 6.0D, 0.05D));
         this.registerSetting(max = new SliderSetting("Max", 3.3D, 3.0D, 6.0D, 0.05D));
         this.registerSetting(weaponOnly = new ButtonSetting("Weapon only", false));

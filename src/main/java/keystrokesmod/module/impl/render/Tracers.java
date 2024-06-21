@@ -2,7 +2,7 @@ package keystrokesmod.module.impl.render;
 
 import keystrokesmod.Raven;
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.RenderUtils;

@@ -22,7 +22,7 @@ public class NoSlow extends Module {
     public static ButtonSetting disablePotions;
     public static ButtonSetting swordOnly;
     public static ButtonSetting vanillaSword;
-    private String[] modes = new String[]{"Vanilla", "Pre", "Post", "Alpha"};
+    private String[] modes = new String[]{"Vanilla" "SwitchItem"};
     private boolean postPlace;
 
     public NoSlow() {
@@ -40,37 +40,22 @@ public class NoSlow extends Module {
         if (ModuleManager.bedAura.stopAutoblock) {
             return;
         }
+
         postPlace = false;
         if (vanillaSword.isToggled() && Utils.holdingSword()) {
             return;
         }
+
         boolean apply = getSlowed() != 0.2f;
+
         if (!apply || !mc.thePlayer.isUsingItem()) {
             return;
         }
-        switch ((int) mode.getInput()) {
-            case 1:
-                if (mc.thePlayer.ticksExisted % 3 == 0 && !Raven.badPacketsHandler.C07) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                }
-                break;
-            case 2:
-                postPlace = true;
-                break;
-            case 3:
-                if (mc.thePlayer.ticksExisted % 3 == 0 && !Raven.badPacketsHandler.C07) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 1, null, 0, 0, 0));
-                }
-        }
-    }
 
-    @SubscribeEvent
-    public void onPostMotion(PostMotionEvent e) {
-        if (postPlace && mode.getInput() == 3) {
+        if (mode.getInput() == 1) {
             if (mc.thePlayer.ticksExisted % 3 == 0 && !Raven.badPacketsHandler.C07) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 1, null, 0, 0, 0));
             }
-            postPlace = false;
         }
     }
 

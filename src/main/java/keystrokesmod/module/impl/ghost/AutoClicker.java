@@ -1,22 +1,14 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
-import akka.actor.Kill;
 import keystrokesmod.module.Module;
-import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Reflection;
 import keystrokesmod.utility.Utils;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
@@ -31,10 +23,6 @@ public class AutoClicker extends Module {
     public SliderSetting minCPS;
     public SliderSetting maxCPS;
     public SliderSetting jitter;
-    public SliderSetting blockHitChance;
-    public static ButtonSetting leftClick;
-    public ButtonSetting rightClick;
-    public ButtonSetting breakBlocks;
     public ButtonSetting inventoryFill;
     public ButtonSetting weaponOnly;
     public ButtonSetting blocksOnly;
@@ -49,15 +37,10 @@ public class AutoClicker extends Module {
     private boolean hol;
 
     public AutoClicker() {
-        super("AutoClicker", Module.category.combat, 0);
-        this.registerSetting(new DescriptionSetting("Best with delay remover."));
+        super("AutoClicker", category.ghost, 0);
         this.registerSetting(minCPS = new SliderSetting("Min CPS", 9.0, 1.0, 20.0, 0.5));
         this.registerSetting(maxCPS = new SliderSetting("Max CPS", 12.0, 1.0, 20.0, 0.5));
         this.registerSetting(jitter = new SliderSetting("Jitter", 0.0, 0.0, 3.0, 0.1));
-        this.registerSetting(blockHitChance = new SliderSetting("Block hit chance", 0.0, 0.0, 100.0, 1.0, "%"));
-        this.registerSetting(leftClick = new ButtonSetting("Left click", true));
-        this.registerSetting(rightClick = new ButtonSetting("Right click", false));
-        this.registerSetting(breakBlocks = new ButtonSetting("Break blocks", false));
         this.registerSetting(inventoryFill = new ButtonSetting("Inventory fill", false));
         this.registerSetting(weaponOnly = new ButtonSetting("Weapon only", false));
         this.registerSetting(blocksOnly = new ButtonSetting("Blocks only", true));
@@ -96,20 +79,17 @@ public class AutoClicker extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderTick(RenderTickEvent ev) {
+    public void onRenderTick(RenderTickEvent ev) throws InvocationTargetException, IllegalAccessException {
         if (ev.phase != Phase.END && Utils.nullCheck() && !mc.thePlayer.isEating()) {
             if (mc.currentScreen == null && mc.inGameHasFocus) {
                 if (weaponOnly.isToggled() && !Utils.holdingWeapon()) {
                     return;
                 }
 
-                if (leftClick.isToggled() && Mouse.isButtonDown(0)) {
-                    this.dc(mc.gameSettings.keyBindAttack.getKeyCode(), 0);
-                } else if (rightClick.isToggled() && Mouse.isButtonDown(1)) {
-                    if (blocksOnly.isToggled() && (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemBlock))) {
+                if (Mouse.isButtonDown(0)) {
+                    if (Mouse.isButtonDown(1))
                         return;
-                    }
-                    this.dc(mc.gameSettings.keyBindUseItem.getKeyCode(), 1);
+                    this.dc();
                 } else {
                     this.i = 0L;
                     this.j = 0L;
@@ -131,28 +111,7 @@ public class AutoClicker extends Module {
         }
     }
 
-    public void dc(int key, int mouse) {
-        if (breakBlocks.isToggled() && mouse == 0 && mc.objectMouseOver != null) {
-            BlockPos p = mc.objectMouseOver.getBlockPos();
-            if (p != null) {
-                Block bl = mc.theWorld.getBlockState(p).getBlock();
-                if (bl != Blocks.air && !(bl instanceof BlockLiquid)) {
-                    if (!this.hol) {
-                        KeyBinding.setKeyBindState(key, true);
-                        KeyBinding.onTick(key);
-                        this.hol = true;
-                    }
-
-                    return;
-                }
-
-                if (this.hol) {
-                    KeyBinding.setKeyBindState(key, false);
-                    this.hol = false;
-                }
-            }
-        }
-
+    public void dc() throws InvocationTargetException, IllegalAccessException {
         if (jitter.getInput() > 0.0D) {
             double a = jitter.getInput() * 0.45D;
             EntityPlayerSP var10000;
@@ -174,25 +133,8 @@ public class AutoClicker extends Module {
         }
 
         if (this.j > 0L && this.i > 0L) {
-            double c = blockHitChance.getInput();
-            if (System.currentTimeMillis() > this.j && KillAura.target == null && !ModuleManager.killAura.swing) {
-                KeyBinding.setKeyBindState(key, true);
-                KeyBinding.onTick(key);
-                Reflection.setButton(mouse, true);
-                if (mouse == 0 && c > 0.0 && Mouse.isButtonDown(1) && Math.random() >= (100.0 - c) / 100.0) {
-                    final int getKeyCode = mc.gameSettings.keyBindUseItem.getKeyCode();
-                    KeyBinding.setKeyBindState(getKeyCode, true);
-                    KeyBinding.onTick(getKeyCode);
-                    Reflection.setButton(1, true);
-                }
-                this.gd();
-            } else if (System.currentTimeMillis() > this.i) {
-                KeyBinding.setKeyBindState(key, false);
-                Reflection.setButton(mouse, false);
-                if (mouse == 0 && c > 0.0 && Math.random() >= (100.0 - c) / 100.0) {
-                    KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
-                    Reflection.setButton(1, false);
-                }
+            if (System.currentTimeMillis() > this.i) {
+                Reflection.clickMouse.invoke(mc);
             }
         } else {
             this.gd();
@@ -202,7 +144,7 @@ public class AutoClicker extends Module {
 
     public void gd() {
         double c = Utils.getRandomValue(minCPS, maxCPS, this.rand) + 0.4D * this.rand.nextDouble();
-        long d = (long) ((int) Math.round(1000.0D / c));
+        long d = (int) Math.round(1000.0D / c);
         if (System.currentTimeMillis() > this.k) {
             if (!this.n && this.rand.nextInt(100) >= 85) {
                 this.n = true;
@@ -236,7 +178,7 @@ public class AutoClicker extends Module {
 
         try {
             this.gs.invoke(s, x, y, 0);
-        } catch (IllegalAccessException | InvocationTargetException var5) {
+        } catch (IllegalAccessException | InvocationTargetException ignored) {
         }
 
     }

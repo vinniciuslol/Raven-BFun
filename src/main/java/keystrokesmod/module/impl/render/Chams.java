@@ -1,7 +1,7 @@
 package keystrokesmod.module.impl.render;
 
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.event.RenderPlayerEvent.Post;
@@ -16,7 +16,7 @@ public class Chams extends Module {
     private HashSet<Entity> bots = new HashSet<>();
 
     public Chams() {
-        super("Chams", Module.category.render, 0);
+        super("Chams", category.render, 0);
         this.registerSetting(ignoreBots = new ButtonSetting("Ignore bots", false));
     }
 

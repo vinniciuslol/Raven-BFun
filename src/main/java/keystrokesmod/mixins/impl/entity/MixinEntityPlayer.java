@@ -1,7 +1,6 @@
 package keystrokesmod.mixins.impl.entity;
 
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.combat.Reduce;
 import keystrokesmod.module.impl.movement.KeepSprint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.enchantment.EnchantmentHelper;

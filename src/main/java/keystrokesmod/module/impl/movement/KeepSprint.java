@@ -16,8 +16,7 @@ public class KeepSprint extends Module {
     public static ButtonSetting reduceReachHits;
 
     public KeepSprint() {
-        super("KeepSprint", Module.category.movement, 0);
-        this.registerSetting(new DescriptionSetting(new String("Default is 40% motion reduction.")));
+        super("KeepSprint", category.movement, 0);
         this.registerSetting(slow = new SliderSetting("Slow %", 40.0D, 0.0D, 40.0D, 1.0D));
         this.registerSetting(disableWhileJump = new ButtonSetting("Disable while jumping", false));
         this.registerSetting(reduceReachHits = new ButtonSetting("Only reduce reach hits", false));

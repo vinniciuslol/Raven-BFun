@@ -18,7 +18,7 @@ public class ChestESP extends Module {
     private ButtonSetting rainbow, outline, shade, disableIfOpened;
 
     public ChestESP() {
-        super("ChestESP", Module.category.render, 0);
+        super("ChestESP", category.render, 0);
         this.registerSetting(red = new SliderSetting("Red", 0.0D, 0.0D, 255.0D, 1.0D));
         this.registerSetting(green = new SliderSetting("Green", 0.0D, 0.0D, 255.0D, 1.0D));
         this.registerSetting(blue = new SliderSetting("Blue", 255.0D, 0.0D, 255.0D, 1.0D));

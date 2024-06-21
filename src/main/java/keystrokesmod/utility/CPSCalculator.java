@@ -2,7 +2,7 @@ package keystrokesmod.utility;
 
 import keystrokesmod.Raven;
 import keystrokesmod.module.impl.client.Settings;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

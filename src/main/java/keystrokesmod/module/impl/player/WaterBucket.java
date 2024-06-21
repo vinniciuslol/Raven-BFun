@@ -14,13 +14,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WaterBucket extends Module {
-    //private ButtonSetting pickup;
     private ButtonSetting silentAim;
     private ButtonSetting switchToItem;
 
     public WaterBucket() {
         super("Water bucket", category.player, 0);
-        //this.registerSetting(pickup = new ButtonSetting("Pickup water", true));
         this.registerSetting(silentAim = new ButtonSetting("Silent aim", true));
         this.registerSetting(switchToItem = new ButtonSetting("Switch to item", true));
     }

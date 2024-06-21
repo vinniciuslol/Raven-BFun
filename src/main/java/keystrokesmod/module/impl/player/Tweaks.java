@@ -7,12 +7,13 @@ import keystrokesmod.utility.Utils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-public class DelayRemover extends Module { // from b4 src
-    public static ButtonSetting oldReg, removeJumpTicks;
+public class Tweaks extends Module {
+    public static ButtonSetting removeHitDelay, removeBlockhitDelay, removeJumpTicks;
 
-    public DelayRemover() {
-        super("Delay Remover", category.player, 0);
-        this.registerSetting(oldReg = new ButtonSetting("1.7 hitreg", true));
+    public Tweaks() {
+        super("Tweaks", category.player, 0);
+        this.registerSetting(removeHitDelay = new ButtonSetting("Remove Hit Delay", true));
+        this.registerSetting(removeBlockhitDelay = new ButtonSetting("Remove Blockhit Delay", false));
         this.registerSetting(removeJumpTicks = new ButtonSetting("Remove jump ticks", false));
     }
 
@@ -21,18 +22,24 @@ public class DelayRemover extends Module { // from b4 src
         if (event.phase != TickEvent.Phase.END || !mc.inGameHasFocus || !Utils.nullCheck()) {
             return;
         }
-        if (oldReg.isToggled()) {
+        if (removeHitDelay.isToggled()) {
             try {
                 Reflection.leftClickCounter.set(mc, 0);
-            } catch (IllegalAccessException ex) {
-            } catch (IndexOutOfBoundsException ex2) {
+            } catch (IllegalAccessException | IndexOutOfBoundsException ignored) {
             }
         }
+
+        if (removeBlockhitDelay.isToggled()) {
+            try {
+                Reflection.blockHitDelay.set(mc.playerController, 0);
+            } catch (IllegalAccessException | IndexOutOfBoundsException ignored) {
+            }
+        }
+
         if (removeJumpTicks.isToggled()) {
             try {
                 Reflection.jumpTicks.set(mc.thePlayer, 0);
-            } catch (IllegalAccessException ex3) {
-            } catch (IndexOutOfBoundsException ex4) {
+            } catch (IllegalAccessException | IndexOutOfBoundsException ignored) {
             }
         }
     }

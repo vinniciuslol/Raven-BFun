@@ -41,7 +41,6 @@ public class Settings extends Module {
         this.registerSetting(new DescriptionSetting("Rotations"));
         this.registerSetting(rotateBody = new ButtonSetting("Rotate body", true));
         this.registerSetting(fullBody = new ButtonSetting("Full body", false));
-        //this.registerSetting(movementFix = new ButtonSetting("Movement fix", false));
         this.registerSetting(randomYawFactor = new SliderSetting("Random yaw factor", 1.0, 0.0, 10.0, 1.0));
         this.registerSetting(new DescriptionSetting("Profiles"));
         this.registerSetting(sendMessage = new ButtonSetting("Send message on enable", true));

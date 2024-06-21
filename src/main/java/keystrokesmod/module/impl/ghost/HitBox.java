@@ -1,4 +1,4 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
@@ -31,7 +31,7 @@ public class HitBox extends Module {
     private MovingObjectPosition mv;
 
     public HitBox() {
-        super("HitBox", category.combat, 0);
+        super("HitBox", category.ghost, 0);
         this.registerSetting(multiplier = new SliderSetting("Multiplier", 1.2, 1.0, 5.0, 0.05, "x"));
         this.registerSetting(playersOnly = new ButtonSetting("Players only", true));
         this.registerSetting(showHitbox = new ButtonSetting("Show new hitbox", false));

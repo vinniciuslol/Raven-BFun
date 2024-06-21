@@ -1,8 +1,7 @@
 package keystrokesmod.module.impl.render;
 
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.player.Freecam;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -21,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
-public class Nametags extends Module { // skidded from raven source code as well
+public class Nametags extends Module {
     private SliderSetting scale;
     private ButtonSetting autoScale;
     private ButtonSetting drawBackground;
@@ -112,7 +111,7 @@ public class Nametags extends Module { // skidded from raven source code as well
             final float n = 0.02666667f;
             if (autoScale.isToggled()) {
                 final float renderPartialTicks = Utils.getTimer().renderPartialTicks;
-                final EntityPlayer o = (Freecam.freeEntity == null) ? mc.thePlayer : Freecam.freeEntity;
+                final EntityPlayer o = mc.thePlayer;
                 final double n2 = o.lastTickPosX + (o.posX - o.lastTickPosX) * renderPartialTicks - (entityPlayer.lastTickPosX + (entityPlayer.posX - entityPlayer.lastTickPosX) * renderPartialTicks);
                 final double n3 = o.lastTickPosY + (o.posY - o.lastTickPosY) * renderPartialTicks - (entityPlayer.lastTickPosY + (entityPlayer.posY - entityPlayer.lastTickPosY) * renderPartialTicks);
                 final double n4 = o.lastTickPosZ + (o.posZ - o.lastTickPosZ) * renderPartialTicks - (entityPlayer.lastTickPosZ + (entityPlayer.posZ - entityPlayer.lastTickPosZ) * renderPartialTicks);

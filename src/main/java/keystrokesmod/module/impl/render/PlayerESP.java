@@ -3,7 +3,7 @@ package keystrokesmod.module.impl.render;
 import keystrokesmod.Raven;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -103,9 +103,7 @@ public class PlayerESP extends Module {
         }
 
         if (shaded.isToggled()) {
-            if (ModuleManager.murderMystery == null || !ModuleManager.murderMystery.isEnabled() || ModuleManager.murderMystery.isEmpty()) {
-                RenderUtils.renderEntity(en, 2, 0, 0, rgb, redOnDamage.isToggled());
-            }
+            RenderUtils.renderEntity(en, 2, 0, 0, rgb, redOnDamage.isToggled());
         }
 
         if (twoD.isToggled()) {

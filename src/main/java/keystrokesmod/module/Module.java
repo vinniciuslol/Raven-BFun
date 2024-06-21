@@ -196,17 +196,15 @@ public class Module {
         this.keycode = keybind;
     }
 
-    public static enum category {
-        combat,
-        movement,
-        player,
-        world,
-        render,
-        minigames,
-        fun,
-        other,
+    public enum category {
         client,
+        combat,
+        ghost,
+        movement,
+        other,
+        player,
         profiles,
-        scripts;
+        render,
+        scripts
     }
 }

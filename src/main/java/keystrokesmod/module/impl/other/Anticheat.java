@@ -1,7 +1,6 @@
 package keystrokesmod.module.impl.other;
 
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.world.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;

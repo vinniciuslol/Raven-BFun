@@ -1,7 +1,7 @@
 package keystrokesmod.mixins.impl.render;
 
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.utility.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

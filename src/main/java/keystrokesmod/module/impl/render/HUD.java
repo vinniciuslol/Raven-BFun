@@ -33,7 +33,7 @@ public class HUD extends Module {
     private boolean canShowInfo;
 
     public HUD() {
-        super("HUD", Module.category.render);
+        super("HUD", category.render);
         this.registerSetting(new DescriptionSetting("Right click bind to hide modules."));
         this.registerSetting(theme = new SliderSetting("Theme", Theme.themes, 0));
         this.registerSetting(new ButtonSetting("Edit position", () -> {

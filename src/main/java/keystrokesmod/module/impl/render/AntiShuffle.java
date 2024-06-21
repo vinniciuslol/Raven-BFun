@@ -7,7 +7,7 @@ public class AntiShuffle extends Module {
     private static String shuffleStr = "§k";
 
     public AntiShuffle() {
-        super("AntiShuffle", Module.category.render, 0);
+        super("AntiShuffle", category.render, 0);
         this.registerSetting(new DescriptionSetting("Removes obfuscation (" + shuffleStr + "hey" + "§" + "r)."));
     }
 

@@ -1,8 +1,7 @@
-package keystrokesmod.module.impl.world;
+package keystrokesmod.module.impl.other;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.player.Freecam;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
@@ -24,7 +23,7 @@ public class AntiBot extends Module {
     private static ButtonSetting tablist;
 
     public AntiBot() {
-        super("AntiBot", Module.category.world, 0);
+        super("AntiBot", category.other, 0);
         this.registerSetting(entitySpawnDelay = new ButtonSetting("Entity spawn delay", false));
         this.registerSetting(delay = new SliderSetting("Delay", 7.0, 0.5, 15.0, 0.5, " second"));
         this.registerSetting(pitSpawn = new ButtonSetting("Pit spawn", false));

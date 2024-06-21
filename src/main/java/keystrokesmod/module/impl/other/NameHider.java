@@ -12,7 +12,7 @@ public class NameHider extends Module {
     public static ButtonSetting hideAllNames;
 
     public NameHider() {
-        super("Name Hider", Module.category.other);
+        super("Name Hider", category.other);
         this.registerSetting(a = new DescriptionSetting(Utils.uf("command") + ": cname [name]"));
         this.registerSetting(hideAllNames = new ButtonSetting("Hide all names", false));
     }

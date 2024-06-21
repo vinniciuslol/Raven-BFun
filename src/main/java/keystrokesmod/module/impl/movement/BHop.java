@@ -18,7 +18,7 @@ public class BHop extends Module {
     public boolean hopping;
 
     public BHop() {
-        super("Bhop", Module.category.movement);
+        super("Bhop", category.movement);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
         this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 8.0, 0.1));
         this.registerSetting(autoJump = new ButtonSetting("Auto jump", true));

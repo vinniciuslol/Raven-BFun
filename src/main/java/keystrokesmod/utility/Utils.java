@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.client.Settings;
-import keystrokesmod.module.impl.combat.AutoClicker;
+import keystrokesmod.module.impl.ghost.AutoClicker;
 import keystrokesmod.module.impl.minigames.DuelsStats;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.block.Block;

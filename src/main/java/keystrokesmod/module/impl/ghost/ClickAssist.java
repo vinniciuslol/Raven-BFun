@@ -1,4 +1,4 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.ButtonSetting;
@@ -23,7 +23,7 @@ public class ClickAssist extends Module {
     private boolean ignNR = false;
 
     public ClickAssist() {
-        super("ClickAssist", Module.category.combat, 0);
+        super("ClickAssist", category.ghost, 0);
         this.registerSetting(new DescriptionSetting("Boost your CPS."));
         this.registerSetting(disableInCreative = new ButtonSetting("Disable in creative", true));
         this.registerSetting(leftClick = new ButtonSetting("Left click", true));

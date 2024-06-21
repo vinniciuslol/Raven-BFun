@@ -1,4 +1,4 @@
-package keystrokesmod.module.impl.combat;
+package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.event.JumpEvent;
 import keystrokesmod.module.Module;
@@ -13,7 +13,7 @@ public class JumpReset extends Module {
     private boolean jump;
 
     public JumpReset() {
-        super("Jump Reset", category.combat);
+        super("Jump Reset", category.ghost);
         this.registerSetting(chance = new SliderSetting("Chance", 80, 0, 100, 1, "%"));
         this.registerSetting(motion = new SliderSetting("Jump motion", 0.42, 0, 1, 0.01));
     }

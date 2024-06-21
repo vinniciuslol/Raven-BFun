@@ -2,7 +2,7 @@ package keystrokesmod.module.impl.render;
 
 import keystrokesmod.clickgui.ClickGui;
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.world.AntiBot;
+import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.utility.RenderUtils;
 import keystrokesmod.utility.Utils;

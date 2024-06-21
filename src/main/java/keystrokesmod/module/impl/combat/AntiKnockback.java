@@ -18,8 +18,6 @@ public class AntiKnockback extends Module {
     private SliderSetting horizontal;
     private SliderSetting vertical;
     private ButtonSetting cancelExplosion;
-    private ButtonSetting damageBoost;
-    private SliderSetting boostMultiplier;
     private ButtonSetting groundCheck;
     private ButtonSetting lobbyCheck;
 
@@ -29,8 +27,6 @@ public class AntiKnockback extends Module {
         this.registerSetting(horizontal = new SliderSetting("Horizontal", 0.0, 0.0, 100.0, 1.0));
         this.registerSetting(vertical = new SliderSetting("Vertical", 0.0, 0.0, 100.0, 1.0));
         this.registerSetting(cancelExplosion = new ButtonSetting("Cancel explosion packet", true));
-        this.registerSetting(damageBoost = new ButtonSetting("Damage boost", false));
-        this.registerSetting(boostMultiplier = new SliderSetting("Boost multiplier", 2.0, 1.0, 8.0, 0.1));
         this.registerSetting(groundCheck = new ButtonSetting("Ground check", false));
         this.registerSetting(lobbyCheck = new ButtonSetting("Lobby check", false));
     }
@@ -63,12 +59,6 @@ public class AntiKnockback extends Module {
                     mc.thePlayer.motionZ = ((double) s12PacketEntityVelocity.getMotionZ() / 8000) * horizontal.getInput()/100;
                 }
                 e.setCanceled(true);
-                if (damageBoost.isToggled()) {
-                    if (groundCheck.isToggled() && !mc.thePlayer.onGround) {
-                        return;
-                    }
-                    Utils.setSpeed(Utils.getHorizontalSpeed() * boostMultiplier.getInput()); // from croat
-                }
             }
         }
         else if (e.getPacket() instanceof S27PacketExplosion) {
