@@ -110,10 +110,6 @@ public class Aura extends Module {
         this.registerSetting(targetTeam = new ButtonSetting("Target Team", false));
         this.registerSetting(fixSlotReset = new ButtonSetting("Fix Slot Reset", false));
         this.registerSetting(silentSwing = new ButtonSetting("Silent Swing", false));
-
-        autoblockRange.showOnly(() -> autoblockMode.getInput() != 0);
-        switchDelay.showOnly(() -> mode.getInput() == 1);
-        targets.showOnly(() -> mode.getInput() != 0);
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

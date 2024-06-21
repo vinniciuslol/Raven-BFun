@@ -23,7 +23,6 @@ public class SliderComponent extends Component {
     private double w;
 
     public SliderComponent(SliderSetting sliderSetting, ModuleComponent moduleComponent, int o) {
-        super(sliderSetting);
         this.sliderSetting = sliderSetting;
         this.moduleComponent = moduleComponent;
         this.x = moduleComponent.categoryComponent.getX() + moduleComponent.categoryComponent.gw();
