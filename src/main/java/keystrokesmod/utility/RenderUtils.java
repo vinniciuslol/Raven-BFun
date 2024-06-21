@@ -123,7 +123,7 @@ public class RenderUtils {
         String s = "";
         int n = -1;
         if (b) {
-            final double t = Utils.gbps((Freecam.freeEntity == null) ? mc.thePlayer : Freecam.freeEntity, 2);
+            final double t = Utils.gbps(mc.thePlayer, 2);
             if (t < 10.0) {
                 n = Color.green.getRGB();
             }
