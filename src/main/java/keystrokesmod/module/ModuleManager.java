@@ -29,7 +29,7 @@ public class ModuleManager {
     public static Module commandLine;
     public static Module antiBot;
     public static Module noSlow;
-    public static KillAura killAura;
+    public static Aura killAura;
     public static Module autoClicker;
     public static Module hitBox;
     public static Module reach;
@@ -107,7 +107,7 @@ public class ModuleManager {
         this.addModule(antiFireball = new AntiFireball());
         this.addModule(bedESP = new BedESP());
         this.addModule(new keystrokesmod.script.Manager());
-        this.addModule(killAura = new KillAura());
+        this.addModule(killAura = new Aura());
         this.addModule(new ItemESP());
         this.addModule(new MobESP());
         this.addModule(new NoRotate());

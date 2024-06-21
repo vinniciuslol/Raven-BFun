@@ -142,6 +142,10 @@ public class ModuleComponent extends Component {
         GL11.glPopMatrix();
         if (this.po && !this.settings.isEmpty()) {
             for (Component c : this.settings) {
+                if (c.set != null)
+                    if (c.set.isHide())
+                        continue;
+
                 c.render();
             }
         }

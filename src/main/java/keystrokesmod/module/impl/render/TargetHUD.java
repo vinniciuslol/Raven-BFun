@@ -1,7 +1,7 @@
 package keystrokesmod.module.impl.render;
 
 import keystrokesmod.module.Module;
-import keystrokesmod.module.impl.combat.KillAura;
+import keystrokesmod.module.impl.combat.Aura;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -12,7 +12,9 @@ import keystrokesmod.utility.Utils;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -33,7 +35,7 @@ public class TargetHUD extends Module {
 
     public TargetHUD() {
         super("TargetHUD", category.render);
-        this.registerSetting(new DescriptionSetting("Only works with KillAura."));
+        this.registerSetting(new DescriptionSetting("Only works with Aura."));
         this.registerSetting(theme = new SliderSetting("Theme", Theme.themes, 0));
         this.registerSetting(renderEsp = new ButtonSetting("Render ESP", true));
         this.registerSetting(showStatus = new ButtonSetting("Show win or loss", true));
@@ -55,18 +57,15 @@ public class TargetHUD extends Module {
                 reset();
                 return;
             }
-            if (KillAura.target != null) {
-                target = KillAura.target;
-                lastAliveMS = System.currentTimeMillis();
-                fadeTimer = null;
-            } else if (target != null) {
+
+            if (target != null) {
                 if (System.currentTimeMillis() - lastAliveMS >= 200 && fadeTimer == null) {
                     (fadeTimer = new Timer(400)).start();
                 }
-            }
-            else {
+            } else {
                 return;
             }
+
             String playerInfo = target.getDisplayName().getFormattedText();
             double health = target.getHealth() / target.getMaxHealth();
             if (health != lastHealth) {
@@ -79,12 +78,18 @@ public class TargetHUD extends Module {
     }
 
     @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent e) {
+        if (e.target instanceof EntityPlayer)
+            target = (EntityLivingBase) e.target;
+    }
+
+    @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent renderWorldLastEvent) {
         if (!renderEsp.isToggled() || !Utils.nullCheck()) {
             return;
         }
-        if (KillAura.target != null) {
-            RenderUtils.renderEntity(KillAura.target, 2, 0.0, 0.0, Theme.getGradient((int) theme.getInput(), 0), false);
+        if (target != null) {
+            RenderUtils.renderEntity(target, 2, 0.0, 0.0, Theme.getGradient((int) theme.getInput(), 0), false);
         }
         else if (renderEntity != null) {
             RenderUtils.renderEntity(renderEntity, 2, 0.0, 0.0, Theme.getGradient((int) theme.getInput(), 0), false);

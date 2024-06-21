@@ -2,15 +2,16 @@ package keystrokesmod.module.impl.movement;
 
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.combat.KillAura;
+import keystrokesmod.module.impl.combat.Aura;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class KeepSprint extends Module {
-    private DescriptionSetting description;
     public static SliderSetting slow;
     public static ButtonSetting disableWhileJump;
     public static ButtonSetting reduceReachHits;
@@ -30,11 +31,8 @@ public class KeepSprint extends Module {
         else if (reduceReachHits.isToggled() && !mc.thePlayer.capabilities.isCreativeMode) {
             double n = -1.0;
             final Vec3 getPositionEyes = mc.thePlayer.getPositionEyes(1.0f);
-            if (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && KillAura.target != null) {
-                n = getPositionEyes.distanceTo(KillAura.target.getPositionEyes(1.0f));
-            }
-            else if (ModuleManager.reach != null && ModuleManager.reach.isEnabled()) {
-                n = getPositionEyes.distanceTo(mc.objectMouseOver.hitVec);
+            if (en != null) {
+                n = getPositionEyes.distanceTo(en.getPositionEyes(1.0f));
             }
             if (n != -1.0 && n <= 3.0) {
                 vanilla = true;

@@ -8,7 +8,6 @@ import keystrokesmod.clickgui.components.impl.ModuleComponent;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.impl.client.CommandLine;
 import keystrokesmod.module.impl.client.Gui;
-import keystrokesmod.module.setting.Setting;
 import keystrokesmod.utility.Commands;
 import keystrokesmod.utility.Timer;
 import keystrokesmod.utility.Utils;

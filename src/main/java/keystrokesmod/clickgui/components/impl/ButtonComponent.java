@@ -20,6 +20,7 @@ public class ButtonComponent extends Component {
     private int y;
 
     public ButtonComponent(Module mod, ButtonSetting op, ModuleComponent b, int o) {
+        super(op);
         this.mod = mod;
         this.buttonSetting = op;
         this.p = b;

@@ -379,7 +379,6 @@ public class BedAura extends Module {
             }
             else if (breakProgress >= 1) {
                 if (mode.getInput() == 2) {
-                    ModuleManager.killAura.resetBlinkState(false);
                     setPacketSlot(Utils.getTool(block));
                 }
                 stopBreak(blockPos);
@@ -406,7 +405,6 @@ public class BedAura extends Module {
             }
             double progress = vanillaProgress = (float) (BlockUtils.getBlockHardness(block, (mode.getInput() == 2 && Utils.getTool(block) != -1) ? mc.thePlayer.inventory.getStackInSlot(Utils.getTool(block)) : mc.thePlayer.getHeldItem(), false, ignoreSlow.isToggled() || groundSpoof.isToggled()) * breakSpeed.getInput());
             if (lastProgress != 0 && breakProgress >= lastProgress) {
-                ModuleManager.killAura.resetBlinkState(false);
                 stopAutoblock = true;
             }
             breakProgress += progress;

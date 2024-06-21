@@ -260,7 +260,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         boolean flag2 = this.movementInput.moveForward >= f;
         this.movementInput.updatePlayerMoveState();
         boolean stopSprint = ModuleManager.noSlow == null || !ModuleManager.noSlow.isEnabled() || NoSlow.slowed.getInput() == 80;
-        if ((this.isUsingItem() || (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && ModuleManager.killAura.block.get() && ModuleManager.killAura.rmbDown && ModuleManager.killAura.manualBlock.isToggled())) && !this.isRiding()) {
+        if (this.isUsingItem() && !this.isRiding()) {
             MovementInput var10000 = this.movementInput;
             float slowed = NoSlow.getSlowed();
             var10000.moveStrafe *= slowed;
@@ -276,7 +276,7 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
         this.pushOutOfBlocks(this.posX + (double) this.width * 0.35, this.getEntityBoundingBox().minY + 0.5, this.posZ - (double) this.width * 0.35);
         this.pushOutOfBlocks(this.posX + (double) this.width * 0.35, this.getEntityBoundingBox().minY + 0.5, this.posZ + (double) this.width * 0.35);
         boolean flag3 = (float) this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
-        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && (!(this.isUsingItem() || (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && ModuleManager.killAura.block.get() && ModuleManager.killAura.rmbDown && ModuleManager.killAura.manualBlock.isToggled())) || !stopSprint) && !this.isPotionActive(Potion.blindness)) {
+        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag3 && !this.isUsingItem() || !stopSprint && !this.isPotionActive(Potion.blindness)) {
             if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown()) {
                 this.sprintToggleTimer = 7;
             } else {
@@ -284,13 +284,12 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
             }
         }
 
-        if ((!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && (!(this.isUsingItem() || (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && ModuleManager.killAura.block.get() && ModuleManager.killAura.rmbDown && ModuleManager.killAura.manualBlock.isToggled())) || !stopSprint) && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown())) {
+        if ((!this.isSprinting() && this.movementInput.moveForward >= f && flag3 && (!this.isUsingItem() || !stopSprint) && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown())) {
             this.setSprinting(true);
         }
 
-        if (this.isSprinting() && ((this.movementInput.moveForward < f || this.isCollidedHorizontally || !flag3) || (ModuleManager.scaffold != null && ModuleManager.scaffold.isEnabled() && !ModuleManager.scaffold.sprint() && !ModuleManager.tower.canSprint()) || (ModuleManager.wTap.isEnabled() && WTap.stopSprint))) {
+        if (this.isSprinting() && ((this.movementInput.moveForward < f || this.isCollidedHorizontally || !flag3) || (ModuleManager.scaffold != null && ModuleManager.scaffold.isEnabled() && !ModuleManager.scaffold.sprint() && !ModuleManager.tower.canSprint()))) {
             this.setSprinting(false);
-            WTap.stopSprint = false;
         }
 
         if (this.capabilities.allowFlying) {
@@ -312,11 +311,11 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
         if (this.capabilities.isFlying && this.isCurrentViewEntity()) {
             if (this.movementInput.sneak) {
-                this.motionY -= (double) (this.capabilities.getFlySpeed() * 3.0F);
+                this.motionY -= this.capabilities.getFlySpeed() * 3.0F;
             }
 
             if (this.movementInput.jump) {
-                this.motionY += (double) (this.capabilities.getFlySpeed() * 3.0F);
+                this.motionY += this.capabilities.getFlySpeed() * 3.0F;
             }
         }
 

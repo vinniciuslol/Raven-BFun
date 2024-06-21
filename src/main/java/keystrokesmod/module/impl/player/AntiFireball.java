@@ -4,7 +4,7 @@ import keystrokesmod.event.PreMotionEvent;
 import keystrokesmod.event.PreUpdateEvent;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.combat.KillAura;
+import keystrokesmod.module.impl.combat.Aura;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.RotationUtils;
@@ -70,15 +70,7 @@ public class AntiFireball extends Module {
             return;
         }
         if (fireball != null) {
-            if (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && ModuleManager.killAura.block.get() && (ModuleManager.killAura.autoBlockMode.getInput() == 3 || ModuleManager.killAura.autoBlockMode.getInput() == 4)) {
-                if (KillAura.target != null) {
-                    attack = false;
-                    return;
-                }
-                attack = true;
-            } else {
-                Utils.attackEntity(fireball, !silentSwing.isToggled(), silentSwing.isToggled());
-            }
+            Utils.attackEntity(fireball, !silentSwing.isToggled(), silentSwing.isToggled());
         }
     }
 
@@ -133,7 +125,7 @@ public class AntiFireball extends Module {
     }
 
     private boolean stopAttack() {
-        return (ModuleManager.bedAura != null && ModuleManager.bedAura.isEnabled() && ModuleManager.bedAura.currentBlock != null) || (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled() && KillAura.target != null);
+        return (ModuleManager.bedAura != null && ModuleManager.bedAura.isEnabled() && ModuleManager.bedAura.currentBlock != null) || (ModuleManager.killAura != null && ModuleManager.killAura.isEnabled());
     }
 
     private boolean condition() {

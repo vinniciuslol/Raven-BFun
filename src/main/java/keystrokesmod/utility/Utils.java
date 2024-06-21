@@ -361,45 +361,6 @@ public class Utils {
         return (mc.currentScreen != null) && (mc.thePlayer.inventoryContainer != null) && (mc.thePlayer.inventoryContainer instanceof ContainerPlayer) && (mc.currentScreen instanceof GuiInventory);
     }
 
-    public static int getBedwarsStatus() {
-        if (!Utils.nullCheck()) {
-            return -1;
-        }
-        final Scoreboard scoreboard = mc.theWorld.getScoreboard();
-        if (scoreboard == null) {
-            return -1;
-        }
-        final ScoreObjective objective = scoreboard.getObjectiveInDisplaySlot(1);
-        if (objective == null || !stripString(objective.getDisplayName()).contains("BED WARS")) {
-            return -1;
-        }
-        for (String line : getSidebarLines()) {
-            line = stripString(line);
-            String[] parts = line.split("  ");
-            if (parts.length > 1) {
-                if (parts[1].startsWith("L")) {
-                    return 0;
-                }
-            } else if (line.equals("Waiting...") || line.startsWith("Starting in")) {
-                return 1;
-            } else if (line.startsWith("R Red:") || line.startsWith("B Blue:")) {
-                return 2;
-            }
-        }
-        return -1;
-    }
-
-    public static String stripString(final String s) {
-        final char[] nonValidatedString = StringUtils.stripControlCodes(s).toCharArray();
-        final StringBuilder validated = new StringBuilder();
-        for (final char c : nonValidatedString) {
-            if (c < '' && c > '') {
-                validated.append(c);
-            }
-        }
-        return validated.toString();
-    }
-
     public static List<String> getSidebarLines() {
         final List<String> lines = new ArrayList<>();
         if (mc.theWorld == null) {

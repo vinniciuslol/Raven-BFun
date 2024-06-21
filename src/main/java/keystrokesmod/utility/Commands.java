@@ -4,7 +4,6 @@ import keystrokesmod.Raven;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.impl.client.Settings;
 import keystrokesmod.module.impl.ghost.Velocity;
-import keystrokesmod.module.impl.minigames.DuelsStats;
 import keystrokesmod.module.impl.movement.BHop;
 import keystrokesmod.module.impl.movement.Fly;
 import keystrokesmod.module.impl.other.NameHider;
@@ -34,7 +33,7 @@ public class Commands {
             boolean hasArgs = c.contains(" ");
             String[] args = hasArgs ? c.split(" ") : null;
             String n;
-            if (cm.startsWith("setkey".toLowerCase())) {
+            if (cm.startsWith("nick")) {
                 if (!hasArgs) {
                     print(invSyn, 1);
                     return;
@@ -42,39 +41,7 @@ public class Commands {
 
                 if (args.length != 2) {
                     print(invSyn, 1);
-                    return;
                 }
-
-                print("Setting...", 1);
-                n = args[1];
-                Raven.getExecutor().execute(() -> {
-                    if (URLUtils.isHypixelKeyValid(n)) {
-                        URLUtils.k = n;
-                        print("&a" + "success!", 0);
-                    } else {
-                        print("&c" + "Invalid key.", 0);
-                    }
-
-                });
-            } else if (cm.startsWith("nick")) {
-                if (!hasArgs) {
-                    print(invSyn, 1);
-                    return;
-                }
-
-                if (args.length != 2) {
-                    print(invSyn, 1);
-                    return;
-                }
-
-                if (args[1].equals("reset")) {
-                    print("&aNick reset.", 1);
-                    return;
-                }
-
-                DuelsStats.nick = args[1];
-                print("&aNick has been set to:", 1);
-                print("\"" + DuelsStats.nick + "\"", 0);
             } else if (cm.startsWith("cname")) {
                 if (!hasArgs) {
                     print(invSyn, 1);
@@ -89,58 +56,6 @@ public class Commands {
                 NameHider.n = args[1];
                 print("&a" + Utils.uf("name") + "Nick has been set to:".substring(4), 1);
                 print("\"" + NameHider.n + "\"", 0);
-            } else if (cm.startsWith(FakeChat.command)) {
-                if (!hasArgs) {
-                    print(invSyn, 1);
-                    return;
-                }
-
-                n = c.replaceFirst(FakeChat.command, "").substring(1);
-                if (n.isEmpty() || n.equals("\\n")) {
-                    print(FakeChat.c4, 1);
-                    return;
-                }
-
-                FakeChat.msg = n;
-                print("&aMessage set!", 1);
-            } else if (cm.startsWith("Duels".toLowerCase())) {
-                if (!hasArgs) {
-                    print(invSyn, 1);
-                    return;
-                }
-
-                if (args.length != 2) {
-                    print(invSyn, 1);
-                    return;
-                }
-
-                if (URLUtils.k.isEmpty()) {
-                    print("&cAPI Key is empty!", 1);
-                    print("Use \"setkey [api_key]\".", 0);
-                    return;
-                }
-
-                n = args[1];
-                print("Retrieving data...", 1);
-                Raven.getExecutor().execute(() -> {
-                    int[] s = ProfileUtils.getHypixelStats(n, ProfileUtils.DM.OVERALL);
-                    if (s != null) {
-                        if (s[0] == -1) {
-                            print("&c" + (n.length() > 16 ? n.substring(0, 16) + "..." : n) + " does not exist!", 0);
-                        } else {
-                            double wlr = s[1] != 0 ? Utils.rnd((double) s[0] / (double) s[1], 2) : (double) s[0];
-                            print("&e" + n + " stats:", 1);
-                            print("Wins: " + s[0], 0);
-                            print("Losses: " + s[1], 0);
-                            print("WLR: " + wlr, 0);
-                            print("Winstreak: " + s[2], 0);
-                            print("Threat: " + DuelsStats.gtl(s[0], s[1], wlr, s[2]).substring(2), 0);
-                        }
-                    } else {
-                        print("&cThere was an error.", 0);
-                    }
-
-                });
             } else if (cm.startsWith("setspeed")) {
                 if (!hasArgs) {
                     print(invSyn, 1);
@@ -172,9 +87,6 @@ public class Commands {
                         break;
                     case "bhop":
                         BHop.speed.setValueRaw(value);
-                        break;
-                    case "speed":
-                        Speed.speed.setValueRaw(value);
                         break;
                     default:
                         print(invSyn, 1);
@@ -383,10 +295,7 @@ public class Commands {
                 }
             } else {
                 print("&eAvailable commands:", 1);
-                print("1 setkey [key]", 0);
                 print("2 friend/enemy [name/clear]", 0);
-                print("3 duels [player]", 0);
-                print("4 nick [name/reset]", 0);
                 print("5 ping", 0);
                 print("6 hide/show [module]", 0);
                 print("&eProfiles:", 0);
@@ -396,7 +305,6 @@ public class Commands {
                 print("4 profiles remove [profile]", 0);
                 print("&eModule-specific:", 0);
                 print("1 cname [name]", 0);
-                print("2 " + FakeChat.command + " [msg]", 0);
                 print("3 setspeed [fly/bhop/speed] [value]", 0);
                 print("4 setvelocity [h/v] [value]", 0);
             }
