@@ -44,7 +44,7 @@ public class NoFall extends Module {
     }
 
     @SubscribeEvent
-    private void onRenderTick(TickEvent.RenderTickEvent e) {
+    public void onRenderTick(TickEvent.RenderTickEvent e) {
         ScaledResolution scaledResolution = new ScaledResolution(mc);
 
         if (mode.getInput() != 3)
