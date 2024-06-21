@@ -101,6 +101,7 @@ public class ModuleManager {
         this.addModule(new Tracers());
         this.addModule(hud = new HUD());
         this.addModule(new Anticheat());
+        this.addModule(new MoreKB());
         this.addModule(new BreakProgress());
         this.addModule(new Xray());
         this.addModule(targetHUD = new TargetHUD());

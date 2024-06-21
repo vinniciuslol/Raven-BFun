@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
 public class Aura extends Module {
     private SliderSetting aps;
     private SliderSetting fov;
-    private SliderSetting autoblockMode;
+    public SliderSetting autoblockMode;
     private SliderSetting mode;
     private SliderSetting rangeMode;
     private SliderSetting searchMode;
@@ -54,7 +54,6 @@ public class Aura extends Module {
     private ButtonSetting targetFriend;
     private ButtonSetting targetInvisible;
     private ButtonSetting targetTeam;
-    private ButtonSetting priorityEnemy;
     private ButtonSetting fixSlotReset;
     private ButtonSetting silentSwing;
 
@@ -71,7 +70,10 @@ public class Aura extends Module {
 
     private Queue<Packet> packets = new ConcurrentLinkedQueue<>();
     private float[] rotations = null;
-    private boolean attack, swing, block, blinked;
+    private boolean attack;
+    private boolean swing;
+    public boolean block;
+    private boolean blinked;
     private float lastYaw, lastPitch;
 
     private Random rand = new Random();
@@ -106,7 +108,6 @@ public class Aura extends Module {
         this.registerSetting(targetFriend = new ButtonSetting("Target Friendd", false));
         this.registerSetting(targetInvisible = new ButtonSetting("Target Invisible", true));
         this.registerSetting(targetTeam = new ButtonSetting("Target Team", false));
-        this.registerSetting(priorityEnemy = new ButtonSetting("Priority Enemy", false));
         this.registerSetting(fixSlotReset = new ButtonSetting("Fix Slot Reset", false));
         this.registerSetting(silentSwing = new ButtonSetting("Silent Swing", false));
 
@@ -272,6 +273,9 @@ public class Aura extends Module {
                     if (e.isDead)
                         continue;
 
+                    if (e.isInvisible() && !targetInvisible.isToggled())
+                        continue;
+
                     if (AntiBot.isBot(e))
                         continue;
 
@@ -325,6 +329,9 @@ public class Aura extends Module {
                     if (e.isDead)
                         return;
 
+                    if (e.isInvisible() && !targetInvisible.isToggled())
+                        return;
+
                     if (AntiBot.isBot(e))
                         return;
 
@@ -373,6 +380,9 @@ public class Aura extends Module {
                                 return false;
 
                             if (e.isDead)
+                                return false;
+
+                            if (e.isInvisible() && !targetInvisible.isToggled())
                                 return false;
 
                             if (AntiBot.isBot(e))

@@ -122,7 +122,7 @@ public class TargetHUD extends Module {
             int k = Utils.merge(array[0], n12);
             int n16 = Utils.merge(array[1], n12);
             float healthBar = (float) (int) (n14 + (n13 - n14) * (1.0 - ((health < 0.05) ? 0.05 : health)));
-            if (healthBar - n13 < 3) { // if goes below, the rounded health bar glitches out
+            if (healthBar - n13 < 3) {
                 healthBar = n13 + 3;
             }
             if (healthBar != lastHealthBar && lastHealthBar - n13 >= 3 && healthBarTimer != null ) {
@@ -141,12 +141,9 @@ public class TargetHUD extends Module {
                 k = n16 = Utils.merge(Utils.getColorForHealth(health), n12);
             }
             RenderUtils.drawRoundedGradientRect((float) n13, (float) n15, lastHealthBar, (float) (n15 + 5), 4.0f, k, k, k, n16); // health bar
-            GlStateManager.pushMatrix();
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
             mc.fontRendererObj.drawString(string, (float) n4, (float) n5, (new Color(220, 220, 220, 255).getRGB() & 0xFFFFFF) | Utils.clamp(n10 + 15) << 24, true);
-            GlStateManager.disableBlend();
-            GlStateManager.popMatrix();
+
+            lastAliveMS = System.currentTimeMillis();
         }
         else {
             target = null;

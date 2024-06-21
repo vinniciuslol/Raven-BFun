@@ -16,6 +16,8 @@ public class KeepSprint extends Module {
     public static ButtonSetting disableWhileJump;
     public static ButtonSetting reduceReachHits;
 
+    private static Entity entity;
+
     public KeepSprint() {
         super("KeepSprint", category.movement, 0);
         this.registerSetting(slow = new SliderSetting("Slow %", 40.0D, 0.0D, 40.0D, 1.0D));
@@ -32,7 +34,7 @@ public class KeepSprint extends Module {
             double n = -1.0;
             final Vec3 getPositionEyes = mc.thePlayer.getPositionEyes(1.0f);
             if (en != null) {
-                n = getPositionEyes.distanceTo(en.getPositionEyes(1.0f));
+                n = getPositionEyes.distanceTo(entity.getPositionEyes(1.0f));
             }
             if (n != -1.0 && n <= 3.0) {
                 vanilla = true;
@@ -46,5 +48,10 @@ public class KeepSprint extends Module {
             mc.thePlayer.motionX *= n2;
             mc.thePlayer.motionZ *= n2;
         }
+    }
+
+    @SubscribeEvent
+    public void onAttackEntity(AttackEntityEvent e) {
+        entity = e.target;
     }
 }
