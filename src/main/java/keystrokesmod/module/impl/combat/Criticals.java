@@ -18,7 +18,8 @@ public class Criticals extends Module {
 
     public Criticals() {
         super("Criticals", category.combat, 0);
-        this.registerSetting(mode);
+        this.registerSetting(mode = new SliderSetting("Mode", modes, 2));
+		this.registerSetting(onlyGround = new ButtonSetting("Only Setting", false));
     }
 
     @SubscribeEvent

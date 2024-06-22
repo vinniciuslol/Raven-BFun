@@ -444,19 +444,21 @@ public class Aura extends Module {
                     target = entities.subList(0, Math.min(entities.size(), 1)).get(0);
                 break;
             case 1:
-                if (Math.abs(System.currentTimeMillis() - lastSwitch) > switchDelay.getInput()) {
-                    if (switchIndex < entities.size() - 1) {
-                        switchIndex++;
-                    } else {
-                        switchIndex = 0;
-                    }
-                    lastSwitch = System.currentTimeMillis();
-                }
+				if (!entities.isEmpty()) {
+					if (Math.abs(System.currentTimeMillis() - lastSwitch) > switchDelay.getInput()) {
+						if (switchIndex < entities.size() - 1) {
+							switchIndex++;
+						} else {
+							switchIndex = 0;
+						}
+						lastSwitch = System.currentTimeMillis();
+					}
 
-                if (switchIndex > entities.size() - 1)
-                    switchIndex = 0;
+					if (switchIndex > entities.size() - 1)
+						switchIndex = 0;
 
-                target = entities.get(switchIndex);
+					target = entities.get(switchIndex);
+				}
                 break;
         }
     }
