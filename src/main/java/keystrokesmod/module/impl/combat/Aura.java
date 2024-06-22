@@ -3,13 +3,8 @@ package keystrokesmod.module.impl.combat;
 import keystrokesmod.Raven;
 import keystrokesmod.event.*;
 import keystrokesmod.module.Module;
-<<<<<<< HEAD
 import keystrokesmod.module.impl.ghost.Reach;
 import keystrokesmod.module.ModuleManager;
-=======
-import keystrokesmod.module.ModuleManager;
-import keystrokesmod.module.impl.ghost.Reach;
->>>>>>> refs/remotes/origin/master
 import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
@@ -463,42 +458,21 @@ public class Aura extends Module {
                 blocking = down;
                 break;
             case 7:
-<<<<<<< HEAD
                 vanillaAutoblock(block.get(), true, true);
-=======
-                vanillaAutoblock(block.get());
->>>>>>> refs/remotes/origin/master
                 break;
         }
     }
 
-<<<<<<< HEAD
-    private void setBlockState(boolean state, boolean sendBlock, boolean sendUnBlock) {
+    private void vanillaAutoblock(boolean state, boolean sendBlock, boolean sendUnBlock) {
         if (Utils.holdingSword()) {
             if (sendBlock && !blocking && state && Utils.holdingSword() && !Raven.badPacketsHandler.C07) {
                 mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
             } else if (sendUnBlock && blocking && !state) {
-=======
-    // caguei
-    private void vanillaAutoblock(boolean t) {
-        if (nobadpackets.isToggled() && isSent)
-            return;
-
-        if (Utils.holdingSword()) {
-            if (!blocking && t && Utils.holdingSword() && !Raven.badPacketsHandler.C07) {
-                mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.getHeldItem(), 0, 0, 0));
-                isSent = true;
-            } else if (blocking && !t) {
->>>>>>> refs/remotes/origin/master
                 unBlock();
             }
         }
 
-<<<<<<< HEAD
         blocking = Reflection.setBlocking(state);
-=======
-        blocking = Reflection.setBlocking(t);
->>>>>>> refs/remotes/origin/master
     }
 
     private void setBlockState(boolean state, boolean sendBlock, boolean sendUnBlock) {
@@ -646,11 +620,7 @@ public class Aura extends Module {
                         }
 
                     } else {
-<<<<<<< HEAD
                         if (distance1 <= blockRange.getInput() && autoBlockMode.getInput() > 0 && Utils.holdingSword()) {
-=======
-                        if (distance1 <= blockRange.getInput() && autoBlockMode.getInput() > 0 && autoBlockMode.getInput() != 7 && Utils.holdingSword()) {
->>>>>>> refs/remotes/origin/master
                             KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
                             block.set(true);
                         }
@@ -712,11 +682,7 @@ public class Aura extends Module {
                                     return false;
                                 }
                             } else {
-<<<<<<< HEAD
                                 if (distance1 <= blockRange.getInput() && autoBlockMode.getInput() > 0 && Utils.holdingSword()) {
-=======
-                                if (distance1 <= blockRange.getInput() && autoBlockMode.getInput() > 0 && autoBlockMode.getInput() != 7 && Utils.holdingSword()) {
->>>>>>> refs/remotes/origin/master
                                     KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(), false);
                                     block.set(true);
                                 }
