@@ -108,7 +108,7 @@ public class LeftClicker extends Module {
         }
 
         public boolean hasTimePassed(long ms) {
-            if (lastTime >= ms) {
+            if (System.currentTimeMillis() >= ms) {
                 this.lastTime = System.currentTimeMillis();
                 return true;
             } else {
