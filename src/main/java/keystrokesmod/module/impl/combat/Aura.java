@@ -74,6 +74,8 @@ public class Aura extends Module {
     private boolean swing;
     public boolean block;
     private boolean blinked;
+
+    // patch gdc penis
     private float lastYaw, lastPitch;
 
     private Random rand = new Random();
@@ -114,7 +116,14 @@ public class Aura extends Module {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderTick(TickEvent.RenderTickEvent e) {
-        if (ac() && swing && !attack) {
+        if (mc.thePlayer == null)
+            return;
+
+        if (ac() && (!entities.isEmpty() || target != null)) {
+            attack = true;
+        }
+
+        if (ac() && swing && !attack && !block) {
             if (silentSwing.isToggled()) {
                 mc.getNetHandler().getNetworkManager().sendPacket(new C0APacketAnimation());
             } else {
@@ -139,32 +148,14 @@ public class Aura extends Module {
                 mc.getNetHandler().getNetworkManager().sendPacket(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
             }
         }
-
-        if (attack) {
-            if (mode.getInput() == 2 && !entities.isEmpty()) {
-                for (EntityLivingBase en : entities) {
-                    Utils.attackEntity(en, !silentSwing.isToggled(), silentSwing.isToggled());
-                    if (block && autoblockMode.getInput() == 2 && Utils.holdingSword())
-                        mc.getNetHandler().getNetworkManager().sendPacket(new C02PacketUseEntity(en, C02PacketUseEntity.Action.INTERACT));
-                }
-            } else if (mode.getInput() != 2 && target != null) {
-                Utils.attackEntity(target, !silentSwing.isToggled(), silentSwing.isToggled());
-
-                if (block && autoblockMode.getInput() == 2 && Utils.holdingSword())
-                    mc.getNetHandler().getNetworkManager().sendPacket(new C02PacketUseEntity(target, C02PacketUseEntity.Action.INTERACT));
-            }
-
-            attack = false;
-        }
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onTick(TickEvent e) {
-        getTarget();
+        if (mc.thePlayer == null)
+            return;
 
-        if (ac() && (!entities.isEmpty() || target != null)) {
-            attack = true;
-        }
+        getTarget();
 
         if (rotationMode.getInput() == 1) {
             if (mode.getInput() == 2 && !entities.isEmpty()) {
@@ -206,9 +197,23 @@ public class Aura extends Module {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPreUpdate(PreUpdateEvent e) {
-        if (block) {
-            setBlocking(true);
-            block = false;
+        setBlocking(block);
+
+        if (attack) {
+            if (mode.getInput() == 2 && !entities.isEmpty()) {
+                for (EntityLivingBase en : entities) {
+                    Utils.attackEntity(en, !silentSwing.isToggled(), silentSwing.isToggled());
+                    if (block && autoblockMode.getInput() == 2 && Utils.holdingSword())
+                        mc.getNetHandler().getNetworkManager().sendPacket(new C02PacketUseEntity(en, C02PacketUseEntity.Action.INTERACT));
+                }
+            } else if (mode.getInput() != 2 && target != null) {
+                Utils.attackEntity(target, !silentSwing.isToggled(), silentSwing.isToggled());
+
+                if (block && autoblockMode.getInput() == 2 && Utils.holdingSword())
+                    mc.getNetHandler().getNetworkManager().sendPacket(new C02PacketUseEntity(target, C02PacketUseEntity.Action.INTERACT));
+            }
+
+            attack = false;
         }
     }
 
