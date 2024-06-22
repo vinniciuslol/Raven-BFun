@@ -75,7 +75,7 @@ public class NoSlow extends Module {
     }
 
     private boolean isUsingItem() {
-        return mc.thePlayer.isUsingItem() || (ModuleManager.killAura.block && ModuleManager.killAura.autoblockMode.getInput() != 0);
+        return mc.thePlayer.isUsingItem() || (ModuleManager.killAura.block.get() && ModuleManager.killAura.autoBlockMode.getInput() != 0);
     }
 
     @Override
