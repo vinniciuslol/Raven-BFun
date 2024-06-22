@@ -56,7 +56,7 @@ public class RightClicker extends Module {
         if (blocksOnly.isToggled() && mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock))
             return;
 
-        if (Mouse.isButtonDown(0) && allow) {
+        if (Mouse.isButtonDown(1) && allow) {
             if (jitter.getInput() > 0.0D) {
                 double a = jitter.getInput() * 0.45D;
                 EntityPlayerSP var10000;
@@ -95,7 +95,7 @@ public class RightClicker extends Module {
         if (mc.currentScreen instanceof GuiInventory)
             return;
 
-        long delay = ThreadLocalRandom.current().nextLong((long) (maxCPS.getInput() / 1000), (long) (minCPS.getInput() / 1000));
+        long delay = ThreadLocalRandom.current().nextLong((long) (1000 / maxCPS.getInput()), (long) (1000 / minCPS.getInput()));
 
         if (timer.hasTimePassed(delay))
             allow = false;

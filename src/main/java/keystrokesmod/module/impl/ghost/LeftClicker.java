@@ -89,7 +89,7 @@ public class LeftClicker extends Module {
         if (mc.currentScreen instanceof GuiInventory)
             return;
 
-        long delay = ThreadLocalRandom.current().nextLong((long) (maxCPS.getInput() / 1000), (long) (minCPS.getInput() / 1000));
+        long delay = ThreadLocalRandom.current().nextLong((long) (1000 / maxCPS.getInput()), (long) (1000 / minCPS.getInput()));
 
         if (timer.hasTimePassed(delay))
             allow = false;
