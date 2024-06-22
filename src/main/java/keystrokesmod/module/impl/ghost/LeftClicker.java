@@ -44,7 +44,7 @@ public class LeftClicker extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderTick(RenderTickEvent e) throws IllegalAccessException {
+    public void onRenderTick(RenderTickEvent e) {
         if (mc.thePlayer == null)
             return;
 
@@ -52,6 +52,24 @@ public class LeftClicker extends Module {
             return;
 
         if (weaponOnly.isToggled() && !Utils.holdingWeapon())
+            return;
+
+
+        long min = (long) (1000 / minCPS.getInput());
+        long max = (long) (1000 / maxCPS.getInput());
+
+        long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
+
+        if (timer.hasTimePassed(delay))
+            allow = true;
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent e) throws IllegalAccessException {
+        if (mc.thePlayer == null)
+            return;
+
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         if (Mouse.isButtonDown(0) && allow) {
@@ -80,24 +98,6 @@ public class LeftClicker extends Module {
 
             allow = false;
         }
-
-    }
-
-    @SubscribeEvent
-    public void onTick(TickEvent e) {
-        if (mc.thePlayer == null)
-            return;
-
-        if (disableOnInventory.isToggled() && mc.currentScreen != null)
-            return;
-
-        long min = (long) (1000 / minCPS.getInput());
-        long max = (long) (1000 / maxCPS.getInput());
-
-        long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
-
-        if (timer.hasTimePassed(delay))
-            allow = true;
     }
 
     class Timer {

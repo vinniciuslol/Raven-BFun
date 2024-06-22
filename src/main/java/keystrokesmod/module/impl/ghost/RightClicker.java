@@ -49,7 +49,7 @@ public class RightClicker extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderTick(RenderTickEvent e) throws IllegalAccessException {
+    public void onRenderTick(RenderTickEvent e) {
         if (mc.thePlayer == null)
             return;
 
@@ -57,6 +57,23 @@ public class RightClicker extends Module {
             return;
 
         if (blocksOnly.isToggled() && mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock))
+            return;
+
+        long min = (long) (1000 / minCPS.getInput());
+        long max = (long) (1000 / maxCPS.getInput());
+
+        long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
+
+        if (timer.hasTimePassed(delay))
+            allow = true;
+    }
+
+    @SubscribeEvent
+    public void onTick(TickEvent e) throws IllegalAccessException {
+        if (mc.thePlayer == null)
+            return;
+
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         if (Mouse.isButtonDown(1) && allow) {
@@ -87,24 +104,6 @@ public class RightClicker extends Module {
 
             allow = false;
         }
-
-    }
-
-    @SubscribeEvent
-    public void onTick(TickEvent e) {
-        if (mc.thePlayer == null)
-            return;
-
-        if (disableOnInventory.isToggled() && mc.currentScreen != null)
-            return;
-
-        long min = (long) (1000 / minCPS.getInput());
-        long max = (long) (1000 / maxCPS.getInput());
-
-        long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
-
-        if (timer.hasTimePassed(delay))
-            allow = true;
     }
 
     class Timer {
