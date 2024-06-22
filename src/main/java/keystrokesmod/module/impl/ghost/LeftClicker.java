@@ -25,6 +25,7 @@ public class LeftClicker extends Module {
     public SliderSetting maxCPS;
     public SliderSetting jitter;
     public ButtonSetting weaponOnly;
+    public ButtonSetting disableOnInventory;
     private Random rand = new Random();
     private Timer timer = new Timer();
     private boolean allow;
@@ -35,6 +36,7 @@ public class LeftClicker extends Module {
         this.registerSetting(maxCPS = new SliderSetting("Max CPS", 12.0, 1.0, 20.0, 0.5));
         this.registerSetting(jitter = new SliderSetting("Jitter", 0.0, 0.0, 3.0, 0.1));
         this.registerSetting(weaponOnly = new ButtonSetting("Weapon only", false));
+        this.registerSetting(disableOnInventory = new ButtonSetting("Disable On Inventory", true));
     }
 
     public void guiUpdate() {
@@ -46,7 +48,7 @@ public class LeftClicker extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if (mc.currentScreen instanceof GuiInventory)
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         if (weaponOnly.isToggled() && !Utils.holdingWeapon())
@@ -86,7 +88,7 @@ public class LeftClicker extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if (mc.currentScreen instanceof GuiInventory)
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         long min = (long) (1000 / minCPS.getInput());

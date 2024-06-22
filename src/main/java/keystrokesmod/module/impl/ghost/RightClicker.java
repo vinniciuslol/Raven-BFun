@@ -28,6 +28,8 @@ public class RightClicker extends Module {
     public SliderSetting jitter;
     public ButtonSetting blocksOnly;
     public ButtonSetting noCpsCap;
+    public ButtonSetting disableOnInventory;
+
     private Random rand = new Random();
     private Timer timer = new Timer();
     private boolean allow;
@@ -39,6 +41,7 @@ public class RightClicker extends Module {
         this.registerSetting(jitter = new SliderSetting("Jitter", 0.0, 0.0, 3.0, 0.1));
         this.registerSetting(blocksOnly = new ButtonSetting("Inventory fill", false));
         this.registerSetting(noCpsCap = new ButtonSetting("No CPS Cap", false));
+        this.registerSetting(disableOnInventory = new ButtonSetting("Disable On Inventory", true));
     }
 
     public void guiUpdate() {
@@ -50,7 +53,7 @@ public class RightClicker extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if (mc.currentScreen instanceof GuiInventory)
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         if (blocksOnly.isToggled() && mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock))
@@ -92,7 +95,7 @@ public class RightClicker extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if (mc.currentScreen instanceof GuiInventory)
+        if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
         long min = (long) (1000 / minCPS.getInput());
