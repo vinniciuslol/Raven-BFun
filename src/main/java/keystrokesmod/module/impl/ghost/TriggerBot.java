@@ -39,12 +39,15 @@ public class TriggerBot extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if (this.j > 0L && this.i > 0L && System.currentTimeMillis() > this.i) {
+        if (this.j > 0L && this.i > 0L) {
             if (!Utils.holdingWeapon() && weaponOnly.isToggled())
                 return;
 
-            if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY)
-                Reflection.clickMouse();
+            if (System.currentTimeMillis() > this.i)
+                if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY)
+                    Reflection.clickMouse();
+        } else {
+            this.gd();
         }
     }
 

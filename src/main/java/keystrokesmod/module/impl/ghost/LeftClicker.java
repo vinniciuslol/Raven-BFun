@@ -128,6 +128,7 @@ public class LeftClicker extends Module {
 
         if (this.j > 0L && this.i > 0L) {
             if (System.currentTimeMillis() > this.i) {
+                Reflection.leftClickCounter.set(mc, 0);
                 Reflection.clickMouse();
             }
         } else {

@@ -51,6 +51,7 @@ public class ModuleManager {
     public static BHop bHop;
     public static NoHurtCam noHurtCam;
     public static Scaffold scaffold;
+    public static Module noMissClick;
 
     public void register() {
         this.addModule(autoClicker = new LeftClicker());
@@ -102,6 +103,8 @@ public class ModuleManager {
         this.addModule(hud = new HUD());
         this.addModule(new Anticheat());
         this.addModule(new MoreKB());
+        this.addModule(noMissClick = new NoMissClick());
+        this.addModule(new Criticals());
         this.addModule(new BreakProgress());
         this.addModule(new Xray());
         this.addModule(targetHUD = new TargetHUD());

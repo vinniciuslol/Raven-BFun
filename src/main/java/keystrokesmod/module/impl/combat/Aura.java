@@ -98,7 +98,7 @@ public class Aura extends Module {
         this.registerSetting(searchMode = new SliderSetting("Search Mode", searchModes, 0));
         this.registerSetting(switchDelay = new SliderSetting("Switch Delay", 120.0, 50.0, 1000.0, 0.5));
         this.registerSetting(targets = new SliderSetting("Target", 2.0, 1.0, 10.0, 1.0));
-        this.registerSetting(rotationMode = new SliderSetting("Rotation Mode", rotationModes, 3));
+        this.registerSetting(rotationMode = new SliderSetting("Rotation Mode", rotationModes, 2));
         this.registerSetting(new DescriptionSetting("Range Settings"));
         this.registerSetting(filter = new SliderSetting("Filter", filters, 0));
         this.registerSetting(autoblockRange = new SliderSetting("Autoblock Range", 3.1, 2.0, 30.0, 0.01));
@@ -110,9 +110,6 @@ public class Aura extends Module {
         this.registerSetting(targetTeam = new ButtonSetting("Target Team", false));
         this.registerSetting(fixSlotReset = new ButtonSetting("Fix Slot Reset", false));
         this.registerSetting(silentSwing = new ButtonSetting("Silent Swing", false));
-    
-		switchDelay.showOnly(() -> mode.getInput() == 1);
-		autoblockRange.showOnly(() -> autoblockMode.getInput() != 0);
 	}
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
@@ -443,7 +440,8 @@ public class Aura extends Module {
 
         switch ((int) mode.getInput()) {
             case 0:
-                target = entities.subList(0, Math.min(entities.size(), 1)).get(0);
+                if (!entities.isEmpty())
+                    target = entities.subList(0, Math.min(entities.size(), 1)).get(0);
                 break;
             case 1:
                 if (Math.abs(System.currentTimeMillis() - lastSwitch) > switchDelay.getInput()) {

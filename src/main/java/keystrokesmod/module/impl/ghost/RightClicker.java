@@ -25,6 +25,7 @@ public class RightClicker extends Module {
     public SliderSetting maxCPS;
     public SliderSetting jitter;
     public ButtonSetting blocksOnly;
+    public ButtonSetting noCpsCap;
     private Random rand = null;
     private Method gs;
     private long i;
@@ -40,6 +41,7 @@ public class RightClicker extends Module {
         this.registerSetting(maxCPS = new SliderSetting("Max CPS", 12.0, 1.0, 20.0, 0.5));
         this.registerSetting(jitter = new SliderSetting("Jitter", 0.0, 0.0, 3.0, 0.1));
         this.registerSetting(blocksOnly = new ButtonSetting("Inventory fill", false));
+        this.registerSetting(noCpsCap = new ButtonSetting("No CPS Cap", false));
 
         try {
             this.gs = GuiScreen.class.getDeclaredMethod("func_73864_a", Integer.TYPE, Integer.TYPE, Integer.TYPE);
@@ -80,9 +82,7 @@ public class RightClicker extends Module {
                 if (!blocksOnly.isToggled() && mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)
                     return;
 
-                if (Mouse.isButtonDown(0)) {
-                    if (Mouse.isButtonDown(1))
-                        return;
+                if (Mouse.isButtonDown(1)) {
                     this.dc();
                 } else {
                     this.i = 0L;
@@ -92,7 +92,7 @@ public class RightClicker extends Module {
         }
     }
 
-    public void dc() {
+    public void dc() throws IllegalAccessException {
         if (jitter.getInput() > 0.0D) {
             double a = jitter.getInput() * 0.45D;
             EntityPlayerSP var10000;
@@ -115,6 +115,9 @@ public class RightClicker extends Module {
 
         if (this.j > 0L && this.i > 0L) {
             if (System.currentTimeMillis() > this.i) {
+                if (noCpsCap.isToggled())
+                    Reflection.rightClickDelayTimerField.set(mc, 0);
+
                 Reflection.rightClick();
             }
         } else {

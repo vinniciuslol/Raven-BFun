@@ -39,8 +39,6 @@ public class NoFall extends Module {
         this.registerSetting(minFallDistance = new SliderSetting("Minimum fall distance", 3.0, 0.0, 8.0, 0.1));
         this.registerSetting(disableAdventure = new ButtonSetting("Disable adventure", false));
         this.registerSetting(ignoreVoid = new ButtonSetting("Ignore void", true));
-		
-		minFallDistance.showOnly(() -> mode.getInput() != 3);
 	}
 
     @SubscribeEvent
@@ -53,6 +51,7 @@ public class NoFall extends Module {
         if (!blinking || ticks <= 1) {
             return;
         }
+
         String text = "blinking: §";
         if (ticks > 50) {
             text += "c";
@@ -63,10 +62,11 @@ public class NoFall extends Module {
         } else {
             text += "a";
         }
+
         text += ticks;
         int[] disp = new int[]{scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight()};
         int wid = mc.fontRendererObj.getStringWidth(text) / 2 - 2;
-        drawText(text, disp[0] / 2 - wid, disp[1] / 2 + 13, 1, -1, true);
+        mc.fontRendererObj.drawString(text, disp[0] / 2 - wid, disp[1] / 2 + 13, -1, true);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -123,6 +123,7 @@ public class NoFall extends Module {
         if (disableAdventure.isToggled() && mc.playerController.getCurrentGameType().isAdventure()) {
             return;
         }
+
         if (ignoreVoid.isToggled() && isVoid()) {
             return;
         }
@@ -180,12 +181,5 @@ public class NoFall extends Module {
 
     private boolean isVoid() {
         return Utils.overVoid(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
-    }
-
-    private void drawText(String text, float x, float y, double scale, int color, boolean shadow) {
-        GlStateManager.pushMatrix();
-        GL11.glScaled(scale, scale, scale);
-        mc.fontRendererObj.drawString(text, x, y, color, shadow);
-        GlStateManager.popMatrix();
     }
 }

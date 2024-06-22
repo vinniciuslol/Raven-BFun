@@ -1,6 +1,9 @@
 package keystrokesmod.module.impl.ghost;
 
 import keystrokesmod.Raven;
+import keystrokesmod.event.JumpEvent;
+import keystrokesmod.event.PreMotionEvent;
+import keystrokesmod.event.StrafeEvent;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
@@ -8,6 +11,7 @@ import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
 
 public class AimAssist extends Module {
@@ -19,6 +23,8 @@ public class AimAssist extends Module {
     private ButtonSetting aimInvis;
     private ButtonSetting blatantMode;
     private ButtonSetting ignoreTeammates;
+    private ButtonSetting silentAim;
+    private float yaw = 0.0F;
 
     public AimAssist() {
         super("AimAssist", category.ghost, 0);
@@ -30,6 +36,7 @@ public class AimAssist extends Module {
         this.registerSetting(aimInvis = new ButtonSetting("Aim invis", false));
         this.registerSetting(blatantMode = new ButtonSetting("Blatant mode", false));
         this.registerSetting(ignoreTeammates = new ButtonSetting("Ignore teammates", false));
+        this.registerSetting(silentAim = new ButtonSetting("Silent Aim", false));
     }
 
     public void onUpdate() {
@@ -44,18 +51,53 @@ public class AimAssist extends Module {
                     if (Raven.debugger) {
                         Utils.sendMessage(this.getName() + " &e" + en.getName());
                     }
-                    if (blatantMode.isToggled()) {
-                        Utils.aim(en, 0.0F);
-                    } else {
-                        double n = Utils.n(en);
-                        if (n > 1.0D || n < -1.0D) {
-                            float val = (float) (-(n / (101.0D - (speed.getInput()))));
-                            mc.thePlayer.rotationYaw += val;
+                    if (!silentAim.isToggled()) {
+                        if (blatantMode.isToggled()) {
+                            Utils.aim(en, 0.0F);
+                        } else {
+                            double n = Utils.n(en);
+                            if (n > 1.0D || n < -1.0D) {
+                                float val = (float) (-(n / (101.0D - (speed.getInput()))));
+                                mc.thePlayer.rotationYaw += val;
+                            }
                         }
                     }
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onPreMotion(PreMotionEvent e) {
+        if (silentAim.isToggled()) {
+            Entity en = this.getEnemy();
+            if (en != null) {
+                if (blatantMode.isToggled()) {
+                    float[] rots = Utils.gr(en);
+                    e.setYaw(rots[0]);
+                    e.setPitch(rots[1]);
+                } else {
+                    double n = Utils.n(en);
+                    if (n > 1.0D || n < -1.0D) {
+                        float val = (float) (-(n / (101.0D - (speed.getInput()))));
+                        e.setYaw(e.getYaw() + val);
+                        yaw = e.getYaw() + val;
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onJump(JumpEvent e) {
+        if (silentAim.isToggled() && getEnemy() != null)
+            e.setYaw(yaw);
+    }
+
+    @SubscribeEvent
+    public void onStrafe(StrafeEvent e) {
+        if (silentAim.isToggled() && getEnemy() != null)
+            e.setYaw(yaw);
     }
 
     private Entity getEnemy() {

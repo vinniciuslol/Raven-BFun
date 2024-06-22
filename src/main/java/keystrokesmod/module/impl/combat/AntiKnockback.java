@@ -47,9 +47,9 @@ public class AntiKnockback extends Module {
                         e.setCanceled(true);
                         break;
                     case 1:
+                        e.setCanceled(true);
                         mc.thePlayer.motionX = ((double) (s12PacketEntityVelocity.getMotionX() / 8000) * 0) / 100;
                         mc.thePlayer.motionZ = ((double) (s12PacketEntityVelocity.getMotionZ() / 8000) * 0) / 100;
-                        e.setCanceled(true);
                         break;
                 }
             }

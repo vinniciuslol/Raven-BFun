@@ -94,6 +94,10 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
     @Shadow
     private int positionUpdateTicks;
 
+    /**
+     * @author
+     * @reason
+     */
     @Overwrite
     public void onUpdate() {
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0, this.posZ))) {
@@ -116,6 +120,10 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
 
     }
 
+    /**
+     * @author
+     * @reason
+     */
     @Overwrite
     public void onUpdateWalkingPlayer() {
         PreMotionEvent preMotionEvent = new PreMotionEvent(
@@ -350,6 +358,5 @@ public abstract class MixinEntityPlayerSP extends AbstractClientPlayer {
             this.capabilities.isFlying = false;
             this.sendPlayerAbilities();
         }
-
     }
 }

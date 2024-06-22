@@ -1,5 +1,6 @@
 package keystrokesmod.mixins.impl.entity;
 
+import keystrokesmod.event.StrafeEvent;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.player.SafeWalk;
 import net.minecraft.block.Block;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
@@ -411,6 +413,46 @@ public abstract class MixinEntity {
             }
 
             this.worldObj.theProfiler.endSection();
+        }
+    }
+
+    /**
+     * @author
+     * @reason
+     */
+    @Overwrite
+    public void moveFlying(float strafe, float forward, float friction)
+    {
+        float yaw = this.rotationYaw;
+
+        if ((Object) this == Minecraft.getMinecraft().thePlayer) {
+            StrafeEvent event = new StrafeEvent(strafe, forward, friction, yaw);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            strafe = event.getStrafe();
+            forward = event.getForward();
+            friction = event.getFriction();
+            yaw = event.getYaw();
+        }
+
+        float f = strafe * strafe + forward * forward;
+
+        if (f >= 1.0E-4F)
+        {
+            f = MathHelper.sqrt_float(f);
+
+            if (f < 1.0F)
+            {
+                f = 1.0F;
+            }
+
+            f = friction / f;
+            strafe = strafe * f;
+            forward = forward * f;
+            float f1 = MathHelper.sin(yaw * (float)Math.PI / 180.0F);
+            float f2 = MathHelper.cos(yaw * (float)Math.PI / 180.0F);
+            this.motionX += strafe * f2 - forward * f1;
+            this.motionZ += forward * f2 + strafe * f1;
         }
     }
 }

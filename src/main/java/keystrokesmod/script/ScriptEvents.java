@@ -122,11 +122,6 @@ public class ScriptEvents {
     }
 
     @SubscribeEvent
-    public void onPostInput(PostInputEvent e) {
-        Raven.scriptManager.invoke("onPostPlayerInput", module);
-    }
-
-    @SubscribeEvent
     public void onPostMotion(PostMotionEvent e) {
         Raven.scriptManager.invoke("onPostMotion", module);
     }

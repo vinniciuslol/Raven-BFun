@@ -21,8 +21,6 @@ public class MoreKB extends Module {
         super("MoreKB", category.combat, 0);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 5));
         this.registerSetting(packets = new SliderSetting("Packets", 1.0, 1.0, 15.0, 1.0));
-		
-		packets.showOnly(() -> !(mode.getInput() >= 3));
     }
 
     @SubscribeEvent

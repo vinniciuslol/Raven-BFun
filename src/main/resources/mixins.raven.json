@@ -5,14 +5,17 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "entity.MixinEntity",
-    "render.MixinFontRenderer",
+    "entity.MixinEntityLivingBase",
+    "entity.MixinEntityPlayer",
     "entity.MixinEntityPlayerSP",
+    "network.MixinNetworkManager",
+    "render.MixinEntityRenderer",
+    "render.MixinFontRenderer",
     "render.MixinLayerCape",
     "render.MixinModelBiped",
-    "entity.MixinEntityLivingBase",
-    "network.MixinNetworkManager",
-    "entity.MixinEntityPlayer",
-    "render.MixinRendererLivingEntity",
-    "render.MixinEntityRenderer"
+    "render.MixinRendererLivingEntity"
+  ],
+  "client": [
+    "MixinMinecraft"
   ]
 }
