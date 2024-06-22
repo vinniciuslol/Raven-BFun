@@ -39,7 +39,9 @@ public class NoFall extends Module {
         this.registerSetting(minFallDistance = new SliderSetting("Minimum fall distance", 3.0, 0.0, 8.0, 0.1));
         this.registerSetting(disableAdventure = new ButtonSetting("Disable adventure", false));
         this.registerSetting(ignoreVoid = new ButtonSetting("Ignore void", true));
-    }
+		
+		minFallDistance.showOnly(() -> mode.getInput() != 3);
+	}
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent e) {

@@ -3,6 +3,14 @@ package keystrokesmod.clickgui.components;
 import keystrokesmod.module.setting.Setting;
 
 public class Component {
+	private Setting set;
+	
+	public Component(Setting set) {
+		this.set = set;
+	}
+	
+	public Component() {}
+	
     public void render() {
     }
 

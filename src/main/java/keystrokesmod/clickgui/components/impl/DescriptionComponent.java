@@ -16,7 +16,8 @@ public class DescriptionComponent extends Component {
     private int y;
 
     public DescriptionComponent(DescriptionSetting desc, ModuleComponent b, int o) {
-        this.desc = desc;
+        super(desc);
+		this.desc = desc;
         this.p = b;
         this.x = b.categoryComponent.getX() + b.categoryComponent.gw();
         this.y = b.categoryComponent.getY() + b.o;
