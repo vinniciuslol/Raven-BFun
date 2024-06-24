@@ -18,7 +18,6 @@ public class Tower extends Module {
     private ButtonSetting disableWhileHurt;
     private ButtonSetting sprintJumpForward;
     private String[] modes = new String[]{"Vanilla", "Mush"};
-    int ticks = 0;
     public Tower() {
         super("Tower", category.player);
         this.registerSetting(new DescriptionSetting("Works with Safewalk & Scaffold"));
@@ -38,14 +37,7 @@ public class Tower extends Module {
             if ((int) mode.getInput() == 0) {
                 mc.thePlayer.jump();
             } else if (mode.getInput() == 1) {
-                ticks++;
-
-                mc.thePlayer.motionY += 0.08;
-
-                if (ticks == 3) {
-                    mc.thePlayer.motionY += 0.13;
-                    ticks = 0;
-                }
+				mc.thePlayer.motionY += 0.10;
             }
         }
     }
