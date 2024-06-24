@@ -96,7 +96,6 @@ public class LeftClicker extends Module {
 			
 			if (allow) {
 				Reflection.leftClickCounter.set(mc, 0);
-				mc.thePlayer.swingItem();
 				Reflection.clickMouse();
 
 				allow = false;
