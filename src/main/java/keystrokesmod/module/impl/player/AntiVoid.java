@@ -63,22 +63,21 @@ public class AntiVoid extends Module {
 
                     mc.thePlayer.motionX = pos.motionX;
                     mc.thePlayer.motionZ = pos.motionZ;
+					mc.thePlayer.motionY = pos.motionY;
+
+					mc.thePlayer.rotationYaw = pos.yaw;
+					mc.thePlayer.rotationPitch = pos.pitch;
+
+					mc.thePlayer.onGround = pos.onGround;
+
+					mc.thePlayer.fallDistance = pos.fallDist;
+
+					mc.thePlayer.inventory.currentItem = pos.itemSlot;
+					
+					Reflection.currentPlayerItem.set(mc.playerController, pos.itemSlot);
+					
+					clearPackets();
                 }
-
-                mc.thePlayer.motionY = pos.motionY;
-
-                mc.thePlayer.rotationYaw = pos.yaw;
-                mc.thePlayer.rotationPitch = pos.pitch;
-
-                mc.thePlayer.onGround = pos.onGround;
-
-                mc.thePlayer.fallDistance = pos.fallDist;
-
-                mc.thePlayer.inventory.currentItem = pos.itemSlot;
-				
-				Reflection.currentPlayerItem.set(mc.playerController, pos.itemSlot);
-				
-                clearPackets();
                 
 			}
         } else {
@@ -147,7 +146,7 @@ public class AntiVoid extends Module {
         return mc.thePlayer.fallDistance >= minFall.getInput() && !isBlockUnder() && mc.thePlayer.ticksExisted >= 100;
     }
 	
-	class PlayerInfo {
+	public class PlayerInfo {
         public double x, y, z;
         public double motionX, motionY, motionZ;
         public float yaw, pitch;
