@@ -1,10 +1,12 @@
 package keystrokesmod.module.impl.player;
 
 import keystrokesmod.event.ReceivePacketEvent;
+import keystrokesmod.utility.Reflection;
 import keystrokesmod.event.SendPacketEvent;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.PacketUtils;
+import keystrokesmod.utility.Reflection;
 import net.minecraft.block.BlockAir;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
@@ -41,11 +43,11 @@ public class AntiVoid extends Module {
 	}
 
     @SubscribeEvent
-    public void onTick(TickEvent e) {
+    public void onTick(TickEvent e) throws IllegalAccessException {
         if (mc.thePlayer == null)
             return;
 
-        if(isSafe()) {
+        if(safe()) {
             pos = new PlayerInfo(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.motionX, mc.thePlayer.motionY, mc.thePlayer.motionZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround, mc.thePlayer.fallDistance, mc.thePlayer.inventory.currentItem);
 
             receivedLagback = false;
@@ -72,9 +74,10 @@ public class AntiVoid extends Module {
 
                 mc.thePlayer.fallDistance = pos.fallDist;
 
-                mc.thePlayer.inventory.currentItem = lastSafePos.itemSlot;
-                mc.playerController.currentPlayerItem = lastSafePos.itemSlot;
-
+                mc.thePlayer.inventory.currentItem = pos.itemSlot;
+				
+				Reflection.currentPlayerItem.set(mc.playerController, pos.itemSlot);
+				
                 clearPackets();
                 
 			}
@@ -95,7 +98,7 @@ public class AntiVoid extends Module {
     }
 
     @SubscribeEvent
-    public void onReceivePacket(ReceivePacketEvent e) {
+    public void onReceivePacket(ReceivePacketEvent e) throws IllegalAccessException {
         if (e.getPacket() instanceof S08PacketPlayerPosLook) {
             S08PacketPlayerPosLook s08 = (S08PacketPlayerPosLook) e.getPacket();
 
@@ -105,11 +108,11 @@ public class AntiVoid extends Module {
                 mc.thePlayer.fallDistance = pos.fallDist;
 
                 mc.thePlayer.inventory.currentItem = pos.itemSlot;
-                mc.playerController.currentPlayerItem = pos.itemSlot;
+                Reflection.currentPlayerItem.set(mc.playerController, pos.itemSlot);
 				
 				clearPackets();
 
-                pos = new PlayerInfo(packet.getX(), packet.getY(), packet.getZ(), 0, 0, 0, packet.getYaw(), packet.getPitch(), false, mc.thePlayer.fallDistance, mc.thePlayer.inventory.currentItem);
+                pos = new PlayerInfo(s08.getX(), s08.getY(), s08.getZ(), 0, 0, 0, s08.getYaw(), s08.getPitch(), false, mc.thePlayer.fallDistance, mc.thePlayer.inventory.currentItem);
 
                 blinking = false;
 

@@ -43,6 +43,7 @@ public class Reflection {
     public static Field shaderResourceLocations;
     public static Field useShader;
     public static Field shaderIndex;
+    public static Field currentPlayerItem;
     public static Method loadShader;
     public static Method getPlayerInfo;
     public static Field inGround;
@@ -92,6 +93,12 @@ public class Reflection {
             if (curBlockDamageMP != null) {
                 curBlockDamageMP.setAccessible(true);
             }
+
+            currentPlayerItem = ReflectionHelper.findField(PlayerControllerMP.class, "field_78777_l", "currentPlayerItem");
+			
+			if (currentPlayerItem != null) {
+				currentPlayerItem.setAccessible(true);
+			}
 
             blockHitDelay = ReflectionHelper.findField(PlayerControllerMP.class, "field_78781_i", "blockHitDelay");
             if (blockHitDelay != null) {
