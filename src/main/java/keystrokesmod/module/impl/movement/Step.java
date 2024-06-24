@@ -17,9 +17,10 @@ public class Step extends Module {
     }
 
     @SubscribeEvent
-    public void onRenderTick(TickEvent.RenderTickEvent e) {
-        if ((int) mode.getInput() == 0) {
-            mc.thePlayer.stepHeight = (float) stepHeight.getInput();
-        }
+    public void onRenderTick(TickEvent e) {
+		if (mc.thePlayer == null)
+			return;
+		
+        mc.thePlayer.stepHeight = (float) stepHeight.getInput();
     }
 }

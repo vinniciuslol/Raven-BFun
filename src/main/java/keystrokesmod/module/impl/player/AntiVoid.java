@@ -20,7 +20,7 @@ public class AntiVoid extends Module {
 
     private final String[] modes = new String[]{"Blink"};
 
-    private BlockPos pos;
+    private PlayerInfo pos;
 
     private LinkedList<Packet> packets = new LinkedList<>();
 
@@ -45,8 +45,8 @@ public class AntiVoid extends Module {
         if (mc.thePlayer == null)
             return;
 
-        if(safe()) {
-            pos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+        if(isSafe()) {
+            pos = new PlayerInfo(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.motionX, mc.thePlayer.motionY, mc.thePlayer.motionZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, mc.thePlayer.onGround, mc.thePlayer.fallDistance, mc.thePlayer.inventory.currentItem);
 
             receivedLagback = false;
 
@@ -55,14 +55,32 @@ public class AntiVoid extends Module {
                 blinking = false;
             }
         } else if(!receivedLagback) {
-            if (sb()) {
-                if (blinking) {
-                    mc.thePlayer.setPosition(pos.getX(), pos.getY(), pos.getZ());
+            if(sb()) {
+				if(blinking) {
+                    mc.thePlayer.setPosition(pos.x, pos.y, pos.z);
+
+                    mc.thePlayer.motionX = pos.motionX;
+                    mc.thePlayer.motionZ = pos.motionZ;
                 }
-            } else {
-                if (!blinking) {
-                    blinking = true;
-                }
+
+                mc.thePlayer.motionY = pos.motionY;
+
+                mc.thePlayer.rotationYaw = pos.yaw;
+                mc.thePlayer.rotationPitch = pos.pitch;
+
+                mc.thePlayer.onGround = pos.onGround;
+
+                mc.thePlayer.fallDistance = pos.fallDist;
+
+                mc.thePlayer.inventory.currentItem = lastSafePos.itemSlot;
+                mc.playerController.currentPlayerItem = lastSafePos.itemSlot;
+
+                clearPackets();
+                
+			}
+        } else {
+            if(!blinking) {
+				blinking = true;
             }
         }
     }
@@ -84,9 +102,14 @@ public class AntiVoid extends Module {
             if(blinking) {
                 mc.thePlayer.onGround = false;
 
-                clearPackets();
+                mc.thePlayer.fallDistance = pos.fallDist;
 
-                pos = new BlockPos(s08.getX(), s08.getY(), s08.getZ());
+                mc.thePlayer.inventory.currentItem = pos.itemSlot;
+                mc.playerController.currentPlayerItem = pos.itemSlot;
+				
+				clearPackets();
+
+                pos = new PlayerInfo(packet.getX(), packet.getY(), packet.getZ(), 0, 0, 0, packet.getYaw(), packet.getPitch(), false, mc.thePlayer.fallDistance, mc.thePlayer.inventory.currentItem);
 
                 blinking = false;
 
@@ -119,5 +142,28 @@ public class AntiVoid extends Module {
 
     private boolean sb() {
         return mc.thePlayer.fallDistance >= minFall.getInput() && !isBlockUnder() && mc.thePlayer.ticksExisted >= 100;
+    }
+	
+	class PlayerInfo {
+        public double x, y, z;
+        public motionX, motionY, motionZ;
+        public yaw, pitch;
+        public boolean onGround;
+        public float fallDist;
+        public int itemSlot;
+
+        public PlayerInfo(double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, boolean onGround, float fallDist, int itemSlot) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.motionX = motionX;
+            this.motionY = motionY;
+            this.motionZ = motionZ;
+            this.yaw = yaw;
+            this.pitch = pitch;
+            this.onGround = onGround;
+            this.fallDist = fallDist;
+            this.itemSlot = itemSlot;
+        }
     }
 }
