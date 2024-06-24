@@ -146,8 +146,8 @@ public class AntiVoid extends Module {
 	
 	class PlayerInfo {
         public double x, y, z;
-        public motionX, motionY, motionZ;
-        public yaw, pitch;
+        public double motionX, motionY, motionZ;
+        public float yaw, pitch;
         public boolean onGround;
         public float fallDist;
         public int itemSlot;
