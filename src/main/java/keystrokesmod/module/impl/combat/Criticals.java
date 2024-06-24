@@ -15,7 +15,7 @@ public class Criticals extends Module {
     private SliderSetting mode;
     private ButtonSetting onlyGround;
 
-    private final String[] modes = new String[]{"Packet", "CrisPacket", "NoGround"};
+    private final String[] modes = new String[]{"Packet", "MushPacket", "NoGround"};
 
     public Criticals() {
         super("Criticals", category.combat, 0);
@@ -28,19 +28,21 @@ public class Criticals extends Module {
         if (onlyGround.isToggled() && !mc.thePlayer.onGround)
             return;
 		
-		if (!(e.target instanceof EntityPlayer))
-			return;
+	    if (!(e.target instanceof EntityPlayer))
+		    return;
+	
+	    mc.thePlayer.onCriticalHit(e.target);
 
         switch ((int) mode.getInput()) {
             case 0:
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
                 break;
             case 1:
-                double offset = Utils.randomizeDouble(1.010E-2F, 2.001E-2F);
+                double offset = Utils.randomizeDouble(8.99E-6F, 10.99E-6F);
 
-                if (((EntityLivingBase) e.target).hurtTime >= 5)
-                    if (mc.thePlayer.ticksExisted % 2 == 0)
-                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
+                if (((EntityLivingBase) e.target).hurtTime >= 7)
+					if (mc.thePlayer.ticksExisted % 4 == 0)
+						mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
                 break;
         }
     }

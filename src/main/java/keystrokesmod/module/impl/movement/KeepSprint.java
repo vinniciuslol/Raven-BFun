@@ -1,21 +1,18 @@
 package keystrokesmod.module.impl.movement;
 
 import keystrokesmod.module.Module;
+import keystrokesmod.module.impl.combat.Switchaura;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Vec3;
-import net.minecraftforge.event.entity.player.AttackEntityEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class KeepSprint extends Module {
     public static SliderSetting slow;
     public static ButtonSetting disableWhileJump;
     public static ButtonSetting reduceReachHits;
-
-    private static Entity entity;
 
     public KeepSprint() {
         super("KeepSprint", category.movement, 0);
@@ -33,7 +30,7 @@ public class KeepSprint extends Module {
             double n = -1.0;
             final Vec3 getPositionEyes = mc.thePlayer.getPositionEyes(1.0f);
             if (en != null) {
-                n = getPositionEyes.distanceTo(entity.getPositionEyes(1.0f));
+                n = getPositionEyes.distanceTo(Switchaura.target != null ? Switchaura.target.getPositionEyes(1.0f) : en.getPositionEyes(1.0f));
             }
             if (n != -1.0 && n <= 3.0) {
                 vanilla = true;
@@ -47,10 +44,5 @@ public class KeepSprint extends Module {
             mc.thePlayer.motionX *= n2;
             mc.thePlayer.motionZ *= n2;
         }
-    }
-
-    @SubscribeEvent
-    public void onAttackEntity(AttackEntityEvent e) {
-        entity = e.target;
     }
 }

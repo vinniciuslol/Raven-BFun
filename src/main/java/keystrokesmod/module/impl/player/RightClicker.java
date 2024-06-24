@@ -101,8 +101,7 @@ public class RightClicker extends Module {
 			if (allow) {
 				if (noCpsCap.isToggled())
 					Reflection.rightClickDelayTimerField.set(mc, 0);
-				
-				mc.thePlayer.swingItem();
+
 				Reflection.rightClick();
 
 				allow = false;

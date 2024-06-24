@@ -4,14 +4,21 @@ import keystrokesmod.event.PreMotionEvent;
 import keystrokesmod.event.PreUpdateEvent;
 import keystrokesmod.event.SendPacketEvent;
 import keystrokesmod.module.Module;
+import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
+import keystrokesmod.utility.BlockUtils;
 import keystrokesmod.utility.PacketUtils;
 import keystrokesmod.utility.Utils;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -30,8 +37,11 @@ public class NoFall extends Module {
 
     private Queue<Packet> packets = new ConcurrentLinkedQueue<>();
     private Queue<Packet> nofallPackets = new ConcurrentLinkedQueue<>();
-    private int ticks = 0, maxFall = 30;
-    private boolean blinking;
+    boolean blinking, doneBlinking;
+    private BlockPos blinkPos, lastDeath, deathPos;
+    private int ticks = 0;
+    private int maxFall = 30;
+    private int minFall = 5;
 
     public NoFall() {
         super("NoFall", category.player);
@@ -48,7 +58,7 @@ public class NoFall extends Module {
         if (mode.getInput() != 3)
             return;
 
-        if (!blinking || ticks <= 1) {
+        if (!blinking || ticks <= 1 || mc.currentScreen == null) {
             return;
         }
 
@@ -77,6 +87,11 @@ public class NoFall extends Module {
         if (ignoreVoid.isToggled() && isVoid()) {
             return;
         }
+		
+		if (Utils.overAir() && mc.thePlayer.onGround) {
+			
+		}
+		
         if ((double) mc.thePlayer.fallDistance > minFallDistance.getInput() || minFallDistance.getInput() == 0) {
             switch ((int) mode.getInput()) {
                 case 0:
@@ -94,28 +109,48 @@ public class NoFall extends Module {
         if (mode.getInput() != 3)
             return;
 
-        ++ticks;
-
-        if (mc.thePlayer.isDead || mc.thePlayer.fallDistance > maxFall || mc.thePlayer.capabilities.isFlying || mc.thePlayer.hurtTime != 0 || mc.thePlayer.onGround && !Utils.onEdge()) {
-            if (mc.thePlayer.onGround && !mc.thePlayer.capabilities.allowFlying && mc.thePlayer.hurtTime == 0) {
-                synchronized (nofallPackets) {
-                    if (!nofallPackets.isEmpty()) {
-                        nofallPackets.forEach(PacketUtils::sendPacketNoEvent);
-                        nofallPackets.clear();
-                    }
-                }
-
-                synchronized (packets) {
-                    if (!packets.isEmpty()) {
-                        packets.forEach(PacketUtils::sendPacketNoEvent);
-                        packets.clear();
-                    }
-                }
-            }
-
-            blinking = false;
-            ticks = 0;
+		if (disableAdventure.isToggled() && mc.playerController.getCurrentGameType().isAdventure()) {
+            return;
         }
+        if (ignoreVoid.isToggled() && isVoid()) {
+            return;
+        }
+		
+        ++ticks;
+		
+		if (!blinking) {
+            if (isDead() || mc.thePlayer.posY - blinkPos.getY() > 0 || blinkPos.getY() - mc.thePlayer.posY > maxFall || mc.thePlayer.capabilities.isFlying || mc.thePlayer.hurtTime != 0 || (mc.thePlayer.onGround && (!Utils.onEdge() || Math.abs(mc.thePlayer.posY - blinkPos.getY()) != 0))) {
+                if (mc.thePlayer.onGround && !mc.thePlayer.capabilities.isFlying && mc.thePlayer.hurtTime == 0) {
+					synchronized (nofallPackets) {
+						if (!nofallPackets.isEmpty()) {
+							nofallPackets.forEach(PacketUtils::sendPacketNoEvent);
+							nofallPackets.clear();
+						}
+					}
+
+					synchronized (packets) {
+						if (!packets.isEmpty()) {
+							packets.forEach(PacketUtils::sendPacketNoEvent);
+							packets.clear();
+						}
+					}
+				}
+
+                blinking = false;
+                doneBlinking = true;
+                nofallPackets.clear();
+                packets.clear();
+                ticks = 0;
+			}
+
+            if (mc.thePlayer.hurtTime == 0 && !mc.thePlayer.capabilities.allowFlying && !ModuleManager.scaffold.isEnabled() && mc.thePlayer.onGround && Utils.onEdge() && mc.gameSettings.keyBindForward.isPressed() && !mc.gameSettings.keyBindBack.isPressed() && !mc.gameSettings.keyBindSneak.isPressed() && !mc.gameSettings.keyBindJump.isPressed() && fallDistance()) {
+                blinkPos = mc.thePlayer.getPosition();
+                blinking = true;
+                doneBlinking = false;
+            }
+			
+			blinking = true;
+		}
     }
 
     @SubscribeEvent
@@ -158,7 +193,7 @@ public class NoFall extends Module {
         }
 
         nofallPackets.add(e.getPacket());
-        nofallPackets.add(e.getPacket());
+        packets.add(e.getPacket());
         e.setCanceled(true);
     }
 
@@ -180,6 +215,50 @@ public class NoFall extends Module {
     }
 
     private boolean isVoid() {
-        return Utils.overVoid(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+        return mc.thePlayer != null && Utils.overVoid(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+    }
+
+    boolean fallDistance() {
+        int fallDist = -1;
+        BlockPos pos = mc.thePlayer.getPosition();
+        int y = (int) Math.floor(pos.getY());
+        if (pos.getY() % 1 == 0) y--;
+        for (int i = y; i > -1; i--) {
+            keystrokesmod.script.classes.Block block = getBlockAt((int) Math.floor(pos.getX()), i, (int) Math.floor(pos.getZ()));
+            if (!block.name.equals("air") && !block.name.contains("sign")) {
+                fallDist = y - i;
+                break;
+            }
+        }
+        if (fallDist < minFall && fallDist != -1) return false;
+        if (fallDist > maxFall) return false;
+        return true;
+    }
+
+    boolean isDead() {
+        EntityPlayer player = mc.thePlayer;
+        lastDeath = deathPos;
+        deathPos = player.getPosition();
+        double deltaY = Math.abs(deathPos.getY() - lastDeath.getY());
+        if (deltaY > 20) return true;
+        return false;
+    }
+
+    boolean voidCheck18(Vec3 pos) {
+        for (int i = (int) Math.floor(pos.yCoord); i > -1; i--) {
+            keystrokesmod.script.classes.Block block = getBlockAt((int) Math.floor(pos.xCoord), i, (int) Math.floor(pos.zCoord));
+            if (!block.name.equals("air")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private keystrokesmod.script.classes.Block getBlockAt(int x, int y, int z) {
+        net.minecraft.block.Block block = BlockUtils.getBlock(new BlockPos(x, y, z));
+        if (block == null) {
+            return new keystrokesmod.script.classes.Block(Blocks.air);
+        }
+        return new keystrokesmod.script.classes.Block(block);
     }
 }

@@ -1,5 +1,7 @@
 package keystrokesmod.mixins.impl.entity;
 
+import keystrokesmod.event.PostStepEvent;
+import keystrokesmod.event.PreStepEvent;
 import keystrokesmod.event.StrafeEvent;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.player.SafeWalk;
@@ -232,6 +234,14 @@ public abstract class MixinEntity {
             this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
 
             if (this.stepHeight > 0.0F && flag1 && (d3 != x || d5 != z)) {
+                if ((Object) this == Minecraft.getMinecraft().thePlayer) {
+                    PreStepEvent e = new PreStepEvent(this.stepHeight);
+
+                    MinecraftForge.EVENT_BUS.post(e);
+
+                    this.stepHeight = e.getStepHeight();
+                }
+
                 double d11 = x;
                 double d7 = y;
                 double d8 = z;
@@ -310,6 +320,12 @@ public abstract class MixinEntity {
                     y = d7;
                     z = d8;
                     this.setEntityBoundingBox(axisalignedbb3);
+                }
+
+                if ((Object) this == Minecraft.getMinecraft().thePlayer) {
+                    PostStepEvent e = new PostStepEvent(this.stepHeight);
+
+                    MinecraftForge.EVENT_BUS.post(e);
                 }
             }
 
