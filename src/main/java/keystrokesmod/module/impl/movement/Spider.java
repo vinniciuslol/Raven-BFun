@@ -14,7 +14,7 @@ public class Spider extends Module {
     public Spider() {
         super("Spider", category.movement, 0);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 1));
-		this.registerSetting(ticks = new SliderSetting("Ticks", 7.0, 1.0, 20.0, 1.0);
+		this.registerSetting(ticks = new SliderSetting("Ticks", 7.0, 1.0, 20.0, 1.0));
     }
 
     @SubscribeEvent
