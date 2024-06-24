@@ -13,8 +13,13 @@ public class Step extends Module {
     public Step() {
         super("Step", category.movement, 0);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
-        this.registerSetting(stepHeight = new SliderSetting("Step Height", 1.0, 0.5, 10.0, 0.5));
+        this.registerSetting(stepHeight = new SliderSetting("Step Height", 1.0, 0.5, 10.0, 0.1));
     }
+	
+	@Override
+	public void onDisable() {
+		mc.thePlayer.stepHeight = 0.6
+	}
 
     @SubscribeEvent
     public void onRenderTick(TickEvent e) {

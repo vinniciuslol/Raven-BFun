@@ -38,10 +38,10 @@ public class Criticals extends Module {
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
                 break;
             case 1:
-                double offset = Utils.randomizeDouble(8.99E-6F, 10.99E-6F);
+                double offset = Utils.randomizeDouble(9.99E-6F, 12.99E-6F);
 
-                if (((EntityLivingBase) e.target).hurtTime >= 7)
-					if (mc.thePlayer.ticksExisted % 4 == 0)
+                if (((EntityLivingBase) e.target).hurtTime >= 8)
+					if (mc.thePlayer.ticksExisted % 5 == 0)
 						mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
                 break;
         }
