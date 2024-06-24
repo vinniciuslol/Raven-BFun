@@ -31,6 +31,14 @@ public class AntiVoid extends Module {
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
         this.registerSetting(minFall = new SliderSetting("Min Fall", 5.0, 1.5, 8.0, 0.5));
     }
+	
+	@Override
+	public void onDisable() {
+		clearPackets();
+		blinking = false;
+		receivedLagback = false;
+		pos = null;
+	}
 
     @SubscribeEvent
     public void onTick(TickEvent e) {
