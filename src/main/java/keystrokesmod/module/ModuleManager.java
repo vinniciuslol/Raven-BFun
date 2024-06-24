@@ -98,6 +98,9 @@ public class ModuleManager {
         this.addModule(new ChestESP());
         this.addModule(new RightClicker());
         this.addModule(new Nametags());
+		this.addModule(new Step());
+		this.addModule(new Spider());
+		this.addModule(new AntiVoid());
         this.addModule(playerESP = new PlayerESP());
         this.addModule(new Tracers());
         this.addModule(hud = new HUD());
