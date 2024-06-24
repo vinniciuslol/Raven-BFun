@@ -18,7 +18,7 @@ public class Step extends Module {
 	
 	@Override
 	public void onDisable() {
-		mc.thePlayer.stepHeight = 0.6
+		mc.thePlayer.stepHeight = 0.6F;
 	}
 
     @SubscribeEvent
