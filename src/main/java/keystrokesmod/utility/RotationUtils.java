@@ -47,6 +47,16 @@ public class RotationUtils {
         return fixRotation(array[0], array[1], n, n2);
     }
 
+    public static float[] getRotationFromPosition(double x, double z, double y) {
+        double xDiff = x - Minecraft.getMinecraft().thePlayer.posX;
+        double zDiff = z - Minecraft.getMinecraft().thePlayer.posZ;
+        double yDiff = y - Minecraft.getMinecraft().thePlayer.posY - 1.2;
+        double dist = MathHelper.sqrt_double(xDiff * xDiff + zDiff * zDiff);
+        float yaw = (float)(Math.atan2(zDiff, xDiff) * 180.0 / Math.PI) - 90.0f;
+        float pitch = (float)(-(Math.atan2(yDiff, dist) * 180.0 / Math.PI));  //3.141592653589793
+        return new float[] { yaw, pitch };
+    }
+
     public static double distanceFromYaw(final Entity entity, final boolean b) {
         return Math.abs(MathHelper.wrapAngleTo180_double(i(entity.posX, entity.posZ) - ((b && PreMotionEvent.setRenderYaw()) ? RotationUtils.renderYaw : mc.thePlayer.rotationYaw)));
     }
@@ -60,8 +70,8 @@ public class RotationUtils {
         final Vec3 getPositionEyes = mc.thePlayer.getPositionEyes(1.0f);
         final float n2 = -array[0] * 0.017453292f;
         final float n3 = -array[1] * 0.017453292f;
-        final float cos = MathHelper.cos(n2 - 3.1415927f);
-        final float sin = MathHelper.sin(n2 - 3.1415927f);
+        final float cos = MathHelper.cos(n2 - (float) Math.PI); //3.1415927f
+        final float sin = MathHelper.sin(n2 - (float) Math.PI);
         final float n4 = -MathHelper.cos(n3);
         final Vec3 vec3 = new Vec3(sin * n4, MathHelper.sin(n3), cos * n4);
         Block block = BlockUtils.getBlock(blockPos);

@@ -29,7 +29,7 @@ public class ModuleManager {
     public static Module commandLine;
     public static Module antiBot;
     public static Module noSlow;
-    public static Aura killAura;
+    public static Switchaura killAura;
     public static Module autoClicker;
     public static Module hitBox;
     public static Module reach;
@@ -102,16 +102,18 @@ public class ModuleManager {
         this.addModule(new Tracers());
         this.addModule(hud = new HUD());
         this.addModule(new Anticheat());
+		this.addModule(new AutoHeal());
         this.addModule(new MoreKB());
         this.addModule(noMissClick = new NoMissClick());
         this.addModule(new Criticals());
         this.addModule(new BreakProgress());
         this.addModule(new Xray());
+		this.addModule(new KillInsults());
         this.addModule(targetHUD = new TargetHUD());
         this.addModule(antiFireball = new AntiFireball());
         this.addModule(bedESP = new BedESP());
         this.addModule(new keystrokesmod.script.Manager());
-        this.addModule(killAura = new Aura());
+        this.addModule(killAura = new Switchaura());
         this.addModule(new ItemESP());
         this.addModule(new MobESP());
         this.addModule(new NoRotate());

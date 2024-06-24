@@ -6,6 +6,7 @@ import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,6 +27,9 @@ public class Criticals extends Module {
     public void onAttackEntity(AttackEntityEvent e) {
         if (onlyGround.isToggled() && !mc.thePlayer.onGround)
             return;
+		
+		if (!(e.target instanceof EntityPlayer))
+			return;
 
         switch ((int) mode.getInput()) {
             case 0:
@@ -35,7 +39,7 @@ public class Criticals extends Module {
                 double offset = Utils.randomizeDouble(1.010E-2F, 2.001E-2F);
 
                 if (((EntityLivingBase) e.target).hurtTime >= 5)
-                    if (mc.thePlayer.ticksExisted % 4 == 0)
+                    if (mc.thePlayer.ticksExisted % 2 == 0)
                         mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
                 break;
         }

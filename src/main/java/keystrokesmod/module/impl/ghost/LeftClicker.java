@@ -1,5 +1,6 @@
 package keystrokesmod.module.impl.ghost;
 
+import keystrokesmod.utility.pasted.*;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -27,7 +28,7 @@ public class LeftClicker extends Module {
     public ButtonSetting weaponOnly;
     public ButtonSetting disableOnInventory;
     private Random rand = new Random();
-    private Timer timer = new Timer();
+    private TimerUtils timer = new TimerUtils();
     private boolean allow;
 
     public LeftClicker() {
@@ -60,7 +61,7 @@ public class LeftClicker extends Module {
 
         long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
 
-        if (timer.hasTimePassed(delay))
+        if (timer.hasTimeElapsed(delay, true))
             allow = true;
     }
 
@@ -72,7 +73,7 @@ public class LeftClicker extends Module {
         if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
-        if (Mouse.isButtonDown(0) && allow) {
+        if (Mouse.isButtonDown(0)) {
             if (jitter.getInput() > 0.0D) {
                 double a = jitter.getInput() * 0.45D;
                 EntityPlayerSP var10000;
@@ -92,11 +93,14 @@ public class LeftClicker extends Module {
                     var10000.rotationPitch = (float) ((double) var10000.rotationPitch - (double) this.rand.nextFloat() * a * 0.45D);
                 }
             }
+			
+			if (allow) {
+				Reflection.leftClickCounter.set(mc, 0);
+				mc.thePlayer.swingItem();
+				Reflection.clickMouse();
 
-            Reflection.leftClickCounter.set(mc, 0);
-            Reflection.clickMouse();
-
-            allow = false;
+				allow = false;
+			}
         }
     }
 

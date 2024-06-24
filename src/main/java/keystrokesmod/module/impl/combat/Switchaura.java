@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 import static net.minecraft.util.EnumFacing.DOWN;
 
-public class Aura extends Module {
+public class Switchaura extends Module {
     public static EntityLivingBase target;
     private SliderSetting aps;
     public SliderSetting autoBlockMode;
@@ -96,8 +96,8 @@ public class Aura extends Module {
     private ConcurrentLinkedQueue<Packet> blinkedPackets = new ConcurrentLinkedQueue<>();
 
 
-    public Aura() {
-        super("Aura", category.combat, 0);
+    public Switchaura() {
+        super("Switchaura", category.combat, 0);
         this.registerSetting(aps = new SliderSetting("APS", 16.0, 1.0, 20.0, 0.5));
         this.registerSetting(autoBlockMode = new SliderSetting("Autoblock", autoBlockModes, 0));
         this.registerSetting(fov = new SliderSetting("FOV", 360.0, 30.0, 360.0, 4.0));

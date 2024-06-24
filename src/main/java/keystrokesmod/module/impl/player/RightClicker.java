@@ -1,5 +1,6 @@
-package keystrokesmod.module.impl.ghost;
+package keystrokesmod.module.impl.player;
 
+import keystrokesmod.utility.pasted.*;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -31,7 +32,7 @@ public class RightClicker extends Module {
     public ButtonSetting disableOnInventory;
 
     private Random rand = new Random();
-    private Timer timer = new Timer();
+    private TimerUtils timer = new TimerUtils();
     private boolean allow;
 
     public RightClicker() {
@@ -64,7 +65,7 @@ public class RightClicker extends Module {
 
         long delay = max > min ? ThreadLocalRandom.current().nextLong(max, min) : min;
 
-        if (timer.hasTimePassed(delay))
+        if (timer.hasTimeElapsed(delay, true))
             allow = true;
     }
 
@@ -76,7 +77,7 @@ public class RightClicker extends Module {
         if (disableOnInventory.isToggled() && mc.currentScreen != null)
             return;
 
-        if (Mouse.isButtonDown(1) && allow) {
+        if (Mouse.isButtonDown(1)) {
             if (jitter.getInput() > 0.0D) {
                 double a = jitter.getInput() * 0.45D;
                 EntityPlayerSP var10000;
@@ -96,34 +97,16 @@ public class RightClicker extends Module {
                     var10000.rotationPitch = (float) ((double) var10000.rotationPitch - (double) this.rand.nextFloat() * a * 0.45D);
                 }
             }
+			
+			if (allow) {
+				if (noCpsCap.isToggled())
+					Reflection.rightClickDelayTimerField.set(mc, 0);
+				
+				mc.thePlayer.swingItem();
+				Reflection.rightClick();
 
-            if (noCpsCap.isToggled())
-                Reflection.rightClickDelayTimerField.set(mc, 0);
-
-            Reflection.rightClick();
-
-            allow = false;
-        }
-    }
-
-    class Timer {
-        private long lastTime;
-
-        public Timer() {
-            this.lastTime = System.currentTimeMillis();
-        }
-
-        public boolean hasTimePassed(long ms) {
-            if (System.currentTimeMillis() >= ms) {
-                this.lastTime = System.currentTimeMillis();
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public boolean getFinish(long ms) {
-            return System.currentTimeMillis() - lastTime >= ms;
+				allow = false;
+			}
         }
     }
 }
