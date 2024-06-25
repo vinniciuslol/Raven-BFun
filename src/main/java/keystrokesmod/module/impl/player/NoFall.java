@@ -88,10 +88,6 @@ public class NoFall extends Module {
             return;
         }
 		
-		if (Utils.overAir() && mc.thePlayer.onGround) {
-			
-		}
-		
         if ((double) mc.thePlayer.fallDistance > minFallDistance.getInput() || minFallDistance.getInput() == 0) {
             switch ((int) mode.getInput()) {
                 case 0:
@@ -119,7 +115,7 @@ public class NoFall extends Module {
         ++ticks;
 		
 		if (!blinking) {
-            if (isDead() || mc.thePlayer.posY - blinkPos.getY() > 0 || blinkPos.getY() - mc.thePlayer.posY > maxFall || mc.thePlayer.capabilities.isFlying || mc.thePlayer.hurtTime != 0 || (mc.thePlayer.onGround && (!Utils.onEdge() || Math.abs(mc.thePlayer.posY - blinkPos.getY()) != 0))) {
+            if (mc.thePlayer.posY - blinkPos.getY() > 0 || blinkPos.getY() - mc.thePlayer.posY > maxFall || mc.thePlayer.capabilities.isFlying || mc.thePlayer.hurtTime != 0 || (mc.thePlayer.onGround && (!Utils.onEdge() || Math.abs(mc.thePlayer.posY - blinkPos.getY()) != 0))) {
                 if (mc.thePlayer.onGround && !mc.thePlayer.capabilities.isFlying && mc.thePlayer.hurtTime == 0) {
 					synchronized (nofallPackets) {
 						if (!nofallPackets.isEmpty()) {
@@ -233,15 +229,6 @@ public class NoFall extends Module {
         if (fallDist < minFall && fallDist != -1) return false;
         if (fallDist > maxFall) return false;
         return true;
-    }
-
-    boolean isDead() {
-        EntityPlayer player = mc.thePlayer;
-        lastDeath = deathPos;
-        deathPos = player.getPosition();
-        double deltaY = Math.abs(deathPos.getY() - lastDeath.getY());
-        if (deltaY > 20) return true;
-        return false;
     }
 
     boolean voidCheck18(Vec3 pos) {

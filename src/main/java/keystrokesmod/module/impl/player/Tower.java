@@ -7,6 +7,7 @@ import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
@@ -17,7 +18,8 @@ public class Tower extends Module {
     private ButtonSetting disableWhileCollided;
     private ButtonSetting disableWhileHurt;
     private ButtonSetting sprintJumpForward;
-    private String[] modes = new String[]{"Vanilla", "Mush"};
+	int tick, ticks;
+    private String[] modes = new String[]{"Vanilla", "LowHop"};
     public Tower() {
         super("Tower", category.player);
         this.registerSetting(new DescriptionSetting("Works with Safewalk & Scaffold"));
@@ -29,6 +31,11 @@ public class Tower extends Module {
         this.registerSetting(sprintJumpForward = new ButtonSetting("Sprint jump forward", false));
         this.canBeEnabled = false;
     }
+	
+	@Override
+	public void onDisable() {
+		tick = ticks = 0;
+	}
 
     @SubscribeEvent
     public void onPreMotion(PreMotionEvent e) {
@@ -37,7 +44,36 @@ public class Tower extends Module {
             if ((int) mode.getInput() == 0) {
                 mc.thePlayer.jump();
             } else if (mode.getInput() == 1) {
-				mc.thePlayer.motionY += 0.10;
+                double amount = Math.random() * 0.000000001;
+
+                int stateY = (int) Math.round((e.getPosY() % 1) * 10000);
+                Vec3 mot = new Vec3(mc.thePlayer.motionX, mc.thePlayer.motionY, mc.thePlayer.motionZ);
+
+                if (!e.isOnGround()) {
+                    if (stateY == 4200) {
+                        tick = 1;
+                    } else if (tick > 0) {
+                        tick++;
+                    }
+                } else {
+                    tick = 0;
+                }
+
+                if (stateY == 1661) {
+                    double diff = 0.04 + Math.random() / 1000d;
+                    mc.thePlayer.motionX = mot.xCoord;
+                    mc.thePlayer.motionY = mot.yCoord - diff;
+                    mc.thePlayer.motionZ = mot.zCoord;
+                    ticks = 1;
+                } else if (ticks == 1) {
+                    mc.thePlayer.motionX = mot.xCoord;
+                    mc.thePlayer.motionY = mot.yCoord - 2;
+                    mc.thePlayer.motionZ = mot.zCoord;
+                    ticks = 2;
+                } else if (ticks == 2 && e.getPosY() % 1 == 0) {
+                    ticks = 0;
+                    e.setPosY(e.getPosY() + amount);
+                }
             }
         }
     }
