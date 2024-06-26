@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 public class Sprint extends Module {
 
     public static SliderSetting mode;
-    private String[] modes = new String[]{"Sprint", "Omni-Sprint"};
+    private String[] modes = new String[]{"Sprint", "Omni-Sprint", "Grim"};
 
     public Sprint() {
         super("Sprint", category.movement, 0);
@@ -43,7 +43,7 @@ public class Sprint extends Module {
         {
             case 1:
                 if(ModuleManager.killAura.target != null || ModuleManager.scaffold.isEnabled()){
-                    return;
+                    mc.thePlayer.setSprinting(true);
                 }
                 else{
                     if (mc.gameSettings.keyBindForward.isKeyDown()) {
@@ -81,7 +81,20 @@ public class Sprint extends Module {
                         mc.thePlayer.setSprinting(true);
                     }
                 }
-
+                break;
+            case 2:
+                if(ModuleManager.killAura.target != null || ModuleManager.scaffold.isEnabled()){
+                    mc.thePlayer.setSprinting(true);
+                }
+                else{
+                    if (mc.gameSettings.keyBindForward.isKeyDown()) {
+                        mc.thePlayer.setSprinting(true);
+                    }
+                    if (mc.gameSettings.keyBindBack.isKeyDown()) {
+                        e.setYaw(mc.thePlayer.rotationYaw - 180);
+                        mc.thePlayer.setSprinting(true);
+                    }
+                }
                 break;
         }
 
