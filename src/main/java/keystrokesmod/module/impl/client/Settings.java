@@ -54,7 +54,6 @@ public class Settings extends Module {
 
     public void loadCapes() {
         try {
-<<<<<<< HEAD
             for (int i = 0; i < capes.length; i++) {
                 String name = capes[i];
 				
@@ -64,30 +63,8 @@ public class Settings extends Module {
                 }
                 BufferedImage bufferedImage = ImageIO.read(stream);
                 loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation(name, new DynamicTexture(bufferedImage)));
-=======
-
-            switch ((int) customCapes.getInput()){
-                case 0:
-                    break;
-                case 1:
-                    InputStream stream = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + "Disabler" + ".png");
-                    BufferedImage bufferedImage = ImageIO.read(stream);
-                    loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation("MushMC Disabler", new DynamicTexture(bufferedImage)));
-                    break;
-                case 2:
-                    InputStream stream2 = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + "Fun" + ".png");
-                    BufferedImage bufferedImage2 = ImageIO.read(stream2);
-                    loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation("Raven BFun", new DynamicTexture(bufferedImage2)));
-                    break;
-                case 3:
-                    InputStream stream23 = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + "optifinergb" + ".png");
-                    BufferedImage bufferedImage23 = ImageIO.read(stream23);
-                    loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation("optifinergb.png", new DynamicTexture(bufferedImage23)));
-                    break;
->>>>>>> refs/remotes/origin/master
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
