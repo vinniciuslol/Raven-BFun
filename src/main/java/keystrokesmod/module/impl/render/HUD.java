@@ -12,10 +12,14 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.client.config.GuiButtonExt;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.RenderTickEvent;
+import org.lwjgl.opengl.GL11;
+import sun.font.FontFamily;
+import sun.font.FontManager;
 
 import java.awt.*;
 import java.io.IOException;
@@ -27,6 +31,7 @@ public class HUD extends Module {
     private static ButtonSetting alignRight;
     private static ButtonSetting lowercase;
     public static ButtonSetting showInfo;
+    public static ButtonSetting watermark;
     public static int hudX = 5;
     public static int hudY = 70;
     private boolean isAlphabeticalSort;
@@ -35,10 +40,11 @@ public class HUD extends Module {
     public HUD() {
         super("HUD", category.render);
         this.registerSetting(new DescriptionSetting("Right click bind to hide modules."));
-        this.registerSetting(theme = new SliderSetting("Theme", Theme.themes, 0));
+        this.registerSetting(theme = new SliderSetting("Theme", Theme.themes, 2));
         this.registerSetting(new ButtonSetting("Edit position", () -> {
             mc.displayGuiScreen(new EditScreen());
         }));
+        this.registerSetting(watermark = new ButtonSetting("Watermark", true));
         this.registerSetting(alignRight = new ButtonSetting("Align right", false));
         this.registerSetting(alphabeticalSort = new ButtonSetting("Alphabetical sort", false));
         this.registerSetting(dropShadow = new ButtonSetting("Drop shadow", true));
@@ -58,6 +64,7 @@ public class HUD extends Module {
 
     @SubscribeEvent
     public void onRenderTick(RenderTickEvent ev) {
+
         if (ev.phase != TickEvent.Phase.END || !Utils.nullCheck()) {
             return;
         }
@@ -72,9 +79,42 @@ public class HUD extends Module {
         if (mc.currentScreen != null || mc.gameSettings.showDebugInfo) {
             return;
         }
+
         int n = hudY;
         double n2 = 0.0;
         try {
+
+
+            int n33 = hudX;
+            int n32 = hudX + 60;
+            int ne = hudY - 19;
+
+            int n322 = hudX + 68;
+            int ne2 = hudY - 12;
+            double n22 = 1.0;
+            int ee = Theme.getGradient((int) theme.getInput(), n22);
+
+            if (watermark.isToggled()) {
+
+                String bFunText = "§l[BFun]";
+                String ravenText = "§lRaven";
+
+                mc.fontRendererObj.drawString(bFunText, n322, (float) ne2, ee, dropShadow.isToggled());
+
+
+                float scale = 2.0f;
+                GL11.glPushMatrix();
+                GL11.glScalef(scale, scale, scale);
+
+
+                float scaledN33 = n33 / scale;
+                float scaledNe = ne / scale;
+
+                mc.fontRendererObj.drawString(ravenText, scaledN33, scaledNe, ee, dropShadow.isToggled());
+
+                // Restaurar a matriz de transformação original
+                GL11.glPopMatrix();
+            }
             for (Module module : ModuleManager.organizedModules) {
                 if (module.isEnabled() && module != this) {
                     if (module.isHidden()) {
@@ -102,6 +142,7 @@ public class HUD extends Module {
                     }
                     mc.fontRendererObj.drawString(moduleName, n3, (float) n, e, dropShadow.isToggled());
                     n += mc.fontRendererObj.FONT_HEIGHT + 2;
+
                 }
             }
         }
