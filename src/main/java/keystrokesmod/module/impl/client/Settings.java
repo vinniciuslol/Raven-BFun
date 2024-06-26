@@ -8,8 +8,6 @@ import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
-import scala.tools.nsc.settings.ScalaSettings;
-import scala.xml.Null;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -25,8 +23,8 @@ public class Settings extends Module {
     public static ButtonSetting middleClickFriends;
     public static ButtonSetting rotateBody;
     public static ButtonSetting fullBody;
-    public static ButtonSetting movementFix;
     public static SliderSetting randomYawFactor;
+    public static ButtonSetting moveFix;
     public static SliderSetting timeMultiplier;
     public static ButtonSetting sendMessage;
     private String[] capes = new String[]{"None", "MushMC Disabler", "Raven BFun", "Optifine RGB"};
@@ -56,16 +54,17 @@ public class Settings extends Module {
         try {
             for (int i = 0; i < capes.length; i++) {
                 String name = capes[i];
-				
-                InputStream stream = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + name + ".png");
-                if (stream == null) {
-                    continue;
+                if (i > 0) {
+                    InputStream stream = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + name + ".png");
+                    if (stream == null) {
+                        continue;
+                    }
+                    BufferedImage bufferedImage = ImageIO.read(stream);
+                    loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation(name, new DynamicTexture(bufferedImage)));
                 }
-                BufferedImage bufferedImage = ImageIO.read(stream);
-                loadedCapes.add(Minecraft.getMinecraft().renderEngine.getDynamicTextureLocation(name, new DynamicTexture(bufferedImage)));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (Exception ignored) {
         }
     }
 }
