@@ -110,7 +110,7 @@ public class ModuleManager {
         this.addModule(new Criticals());
         this.addModule(new BreakProgress());
         this.addModule(new Xray());
-		this.addModule(new KillInsults());
+
         this.addModule(targetHUD = new TargetHUD());
         this.addModule(antiFireball = new AntiFireball());
         this.addModule(bedESP = new BedESP());
