@@ -81,7 +81,7 @@ public class Module {
             }
             catch (Exception e) {
                 e.printStackTrace();
-                Utils.sendMessage("&cFailed to check keybinding, Setting to none");
+                Utils.sendMessage("&cFailed to check keybinding, Setting to NONE");
                 this.keycode = 0;
             }
         }
