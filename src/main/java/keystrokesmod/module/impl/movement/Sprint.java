@@ -42,59 +42,71 @@ public class Sprint extends Module {
         switch ((int) mode.getInput())
         {
             case 1:
-                if(ModuleManager.killAura.target != null || ModuleManager.scaffold.isEnabled()){
+                if(ModuleManager.killAura.target != null){
                     mc.thePlayer.setSprinting(true);
                 }
                 else{
-                    if (mc.gameSettings.keyBindForward.isKeyDown()) {
+                    if (ModuleManager.scaffold.isEnabled()){
                         mc.thePlayer.setSprinting(true);
                     }
-                    if (mc.gameSettings.keyBindBack.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw - 180);
-                        mc.thePlayer.setSprinting(true);
-                    }
-                    if (mc.gameSettings.keyBindLeft.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw - 90);
-                        mc.thePlayer.setSprinting(true);
-                    }
+                    else{
+                        if (mc.gameSettings.keyBindForward.isKeyDown()) {
+                            mc.thePlayer.setSprinting(true);
+                        }
+                        if (mc.gameSettings.keyBindBack.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw - 180);
+                            mc.thePlayer.setSprinting(true);
+                        }
+                        if (mc.gameSettings.keyBindLeft.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw - 90);
+                            mc.thePlayer.setSprinting(true);
+                        }
 
-                    if (mc.gameSettings.keyBindRight.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw + 90);
-                        mc.thePlayer.setSprinting(true);
-                    }
-                    if (mc.gameSettings.keyBindRight.isKeyDown() && mc.gameSettings.keyBindForward.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw + 45);
-                        mc.thePlayer.setSprinting(true);
-                    }
-                    if (mc.gameSettings.keyBindLeft.isKeyDown() && mc.gameSettings.keyBindForward.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw - 45);
-                        mc.thePlayer.setSprinting(true);
+                        if (mc.gameSettings.keyBindRight.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw + 90);
+                            mc.thePlayer.setSprinting(true);
+                        }
+                        if (mc.gameSettings.keyBindRight.isKeyDown() && mc.gameSettings.keyBindForward.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw + 45);
+                            mc.thePlayer.setSprinting(true);
+                        }
+                        if (mc.gameSettings.keyBindLeft.isKeyDown() && mc.gameSettings.keyBindForward.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw - 45);
+                            mc.thePlayer.setSprinting(true);
 
-                    }
-                    if (mc.gameSettings.keyBindBack.isKeyDown() && mc.gameSettings.keyBindLeft.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw - 135);
-                        mc.thePlayer.setSprinting(true);
-                    }
+                        }
+                        if (mc.gameSettings.keyBindBack.isKeyDown() && mc.gameSettings.keyBindLeft.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw - 135);
+                            mc.thePlayer.setSprinting(true);
+                        }
 
-                    if (mc.gameSettings.keyBindBack.isKeyDown() && mc.gameSettings.keyBindRight.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw + 135);
-                        mc.thePlayer.setSprinting(true);
+                        if (mc.gameSettings.keyBindBack.isKeyDown() && mc.gameSettings.keyBindRight.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw + 135);
+                            mc.thePlayer.setSprinting(true);
+                        }
                     }
                 }
+
                 break;
             case 2:
-                if(ModuleManager.killAura.target != null || ModuleManager.scaffold.isEnabled()){
+                if(ModuleManager.killAura.target != null){
                     mc.thePlayer.setSprinting(true);
                 }
                 else{
-                    if (mc.gameSettings.keyBindForward.isKeyDown()) {
+                    if (ModuleManager.scaffold.isEnabled()){
                         mc.thePlayer.setSprinting(true);
                     }
-                    if (mc.gameSettings.keyBindBack.isKeyDown()) {
-                        e.setYaw(mc.thePlayer.rotationYaw - 180);
-                        mc.thePlayer.setSprinting(true);
+                    else{
+                        if (mc.gameSettings.keyBindForward.isKeyDown()) {
+                            mc.thePlayer.setSprinting(true);
+                        }
+                        if (mc.gameSettings.keyBindBack.isKeyDown()) {
+                            e.setYaw(mc.thePlayer.rotationYaw - 180);
+                            mc.thePlayer.setSprinting(true);
+                        }
                     }
                 }
+
                 break;
         }
 
