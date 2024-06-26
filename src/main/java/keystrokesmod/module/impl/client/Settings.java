@@ -8,6 +8,8 @@ import keystrokesmod.module.setting.impl.SliderSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
+import scala.tools.nsc.settings.ScalaSettings;
+import scala.xml.Null;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,8 +25,8 @@ public class Settings extends Module {
     public static ButtonSetting middleClickFriends;
     public static ButtonSetting rotateBody;
     public static ButtonSetting fullBody;
+    public static ButtonSetting movementFix;
     public static SliderSetting randomYawFactor;
-    public static ButtonSetting moveFix;
     public static SliderSetting timeMultiplier;
     public static ButtonSetting sendMessage;
     private String[] capes = new String[]{"None", "MushMC Disabler", "Raven BFun", "Optifine RGB"};
@@ -67,4 +69,7 @@ public class Settings extends Module {
         catch (Exception ignored) {
         }
     }
+
+
+
 }
