@@ -6,7 +6,7 @@ import java.awt.*;
 
 public enum Theme {
     Rainbow(null, null), // 0
-    Cherry(new Color(255, 200, 200), new Color(243, 58, 106)), // 1
+    Fun(new Color(255, 255, 255), new Color(121, 0, 158)),
     Cotton_candy(new Color(99, 249, 255), new Color(255, 104, 204)), // 2
     Flare(new Color(231, 39, 24), new Color(245, 173, 49)), // 3
     Flower(new Color(215, 166, 231), new Color(211, 90, 232)), // 4
@@ -59,5 +59,5 @@ public enum Theme {
         return new int[]{0, 0};
     }
 
-    public static String[] themes = new String[]{"Rainbow", "Cherry", "Cotton candy", "Flare", "Flower", "Gold", "Grayscale", "Royal", "Sky", "Vine"};
+    public static String[] themes = new String[]{"Rainbow", "Fun", "Cotton candy", "Flare", "Flower", "Gold", "Grayscale", "Royal", "Sky", "Vine"};
 }
