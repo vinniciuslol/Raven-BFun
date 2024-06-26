@@ -27,6 +27,7 @@ public class ModuleManager {
     public static FastMine fastMine;
     public static Module antiShuffle;
     public static Module commandLine;
+    public static Derp Derp;
     public static Module antiBot;
     public static Module noSlow;
     public static Switchaura killAura;
@@ -57,6 +58,7 @@ public class ModuleManager {
         this.addModule(autoClicker = new LeftClicker());
         this.addModule(new LongJump());
         this.addModule(new AimAssist());
+        this.addModule(new Derp());
         this.addModule(new Blink());
         this.addModule(new BurstClicker());
         this.addModule(new ClickAssist());
