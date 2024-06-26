@@ -14,6 +14,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class Criticals extends Module {
     private SliderSetting mode;
     private ButtonSetting onlyGround;
+	
+	private EntityLivingBase target;
 
     private final String[] modes = new String[]{"Packet", "MushPacket", "NoGround"};
 
@@ -22,6 +24,11 @@ public class Criticals extends Module {
         this.registerSetting(mode = new SliderSetting("Mode", modes, 2));
 		this.registerSetting(onlyGround = new ButtonSetting("Only Setting", false));
     }
+	
+	@Override
+	public void onDisable() {
+		target = null;
+	}
 
     @SubscribeEvent
     public void onAttackEntity(AttackEntityEvent e) {
@@ -32,24 +39,32 @@ public class Criticals extends Module {
 		    return;
 	
 	    mc.thePlayer.onCriticalHit(e.target);
-
-        switch ((int) mode.getInput()) {
-            case 0:
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
-                break;
-            case 1:
-                double offset = Utils.randomizeDouble(10.999E-6F, 15.999E-6F);
-
-                if (((EntityLivingBase) e.target).hurtTime >= 6)
-					if (mc.thePlayer.ticksExisted % 3 == 0)
-						mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + offset, mc.thePlayer.posZ, false));
-                break;
-        }
+		
+		target = (EntityLivingBase) e.target;
+		
+        if (mode.getInput() == 0)
+            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
     }
 
     @SubscribeEvent
     public void onPreMotion(PreMotionEvent e) {
-        if (mode.getInput() == 2)
-            e.setOnGround(false);
+		if (mode.getInput() == 2) {
+			e.setOnGround(false);
+			return;
+		}
+		
+		if (target != null) {
+			if (mode.getInput() == 1) {
+				double offset = Utils.randomizeDouble(25.999E-6F, 30.999E-6F);
+				
+				if (target.hurtTime >= 6 && mc.thePlayer.ticksExisted % 2 == 0) {
+					e.setPosY(e.getPosY() + offset);
+					e.setOnGround(false);
+				} else
+					return;
+			}
+			
+			target = null;
+		}
     }
 }

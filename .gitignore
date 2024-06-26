@@ -8,6 +8,8 @@
 # BlueJ files
 *.ctxt
 
+src/main/java/keystrokesmod/module/impl/other/KillInsults.java
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 

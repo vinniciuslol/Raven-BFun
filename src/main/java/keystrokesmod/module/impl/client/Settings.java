@@ -27,7 +27,7 @@ public class Settings extends Module {
     public static SliderSetting randomYawFactor;
     public static SliderSetting timeMultiplier;
     public static ButtonSetting sendMessage;
-    private String[] capes = new String[]{"None", "Anime", "Aqua", "Green", "Purple", "Red", "White", "Yellow"};
+    private String[] capes = new String[]{"None", "MushMC Disabler", "Raven BFun", "Optifine RGB"};
     public static List<ResourceLocation> loadedCapes = new ArrayList<>();
 
     public Settings() {
@@ -52,11 +52,9 @@ public class Settings extends Module {
 
     public void loadCapes() {
         try {
-            for (int i = 1; i < capes.length; i++) {
-                String name = capes[i].toLowerCase();
-                if (i > 1) {
-                    name = "rvn_" + name;
-                }
+            for (int i = 0; i < capes.length; i++) {
+                String name = capes[i];
+				
                 InputStream stream = Raven.class.getResourceAsStream("/assets/keystrokesmod/textures/capes/" + name + ".png");
                 if (stream == null) {
                     continue;
