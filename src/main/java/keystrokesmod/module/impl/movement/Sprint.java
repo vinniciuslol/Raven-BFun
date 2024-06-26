@@ -42,8 +42,8 @@ public class Sprint extends Module {
         switch ((int) mode.getInput())
         {
             case 1:
-                if(ModuleManager.killAura.target != null){
-
+                if(ModuleManager.killAura.target != null || ModuleManager.scaffold.isEnabled()){
+                    return;
                 }
                 else{
                     if (mc.gameSettings.keyBindForward.isKeyDown()) {
