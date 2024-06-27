@@ -37,6 +37,8 @@ public class PlayerCircle extends Module {
         }
     }
 
+
+
     private void renderCircleAroundTarget(Entity target, float partialTicks) {
         double radius = 1.0;
         int segments = 50;
