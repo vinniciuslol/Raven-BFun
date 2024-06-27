@@ -71,22 +71,13 @@ public class BHop extends Module {
                 break;
             case 2:
                 if (Utils.isMoving()) {
-                    if (mc.thePlayer.onGround && autoJump.isToggled()) {
-                        mc.thePlayer.jump();
+                    mc.thePlayer.motionY += 0.1;
 
-                        if (mc.thePlayer.isCollidedHorizontally) {
+                    if (mc.thePlayer.onGround)
+                        Utils.setSpeed(Utils.getHorizontalSpeed() * 4.2);
 
-                        }
-                        else{
-                            mc.thePlayer.motionY *= 0.2;
-                        }
-                    }
-                    mc.thePlayer.setSprinting(true);
-                    Utils.setSpeed(Utils.getHorizontalSpeed() + 0.005 * speed.getInput());
                     hopping = true;
-                    break;
                 }
-                break;
         }
     }
 

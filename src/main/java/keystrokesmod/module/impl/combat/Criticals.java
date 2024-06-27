@@ -17,7 +17,7 @@ public class Criticals extends Module {
 	
 	private EntityLivingBase target;
 
-    private final String[] modes = new String[]{"Packet", "MushPacket", "NoGround"};
+    private final String[] modes = new String[]{"Packet", "Mush", "NoGround", "Packet2"};
 
     public Criticals() {
         super("Criticals", category.combat, 0);
@@ -42,29 +42,29 @@ public class Criticals extends Module {
 		
 		target = (EntityLivingBase) e.target;
 		
-        if (mode.getInput() == 0)
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
-    }
+		switch ((int) mode.getInput()) {
+			case 0:
+				mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 1.05E-6F, mc.thePlayer.posZ, false));
+				mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+				break;
+			case 1:
+				double[] offset = new double[]{30.9999E-6F, 40.9999E-7F, 50.9999E-8F, 60.9999E-9F, 0, 0, 0};
+				
+				if (((EntityLivingBase) e.target).hurtTime >= 5 && mc.thePlayer.ticksExisted % 10 == 0)
+					for (double o : offset)
+						mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + o, mc.thePlayer.posZ, false));
+				break;
+			case 3:
+				if (((EntityLivingBase) e.target).hurtTime >= 3) {
+					mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.600, mc.thePlayer.posZ, false));
+					mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
+				}
+		}
+	}
 
     @SubscribeEvent
     public void onPreMotion(PreMotionEvent e) {
-		if (mode.getInput() == 2) {
+		if (mode.getInput() == 2)
 			e.setOnGround(false);
-			return;
-		}
-		
-		if (target != null) {
-			if (mode.getInput() == 1) {
-				double offset = Utils.randomizeDouble(25.999E-6F, 30.999E-6F);
-				
-				if (target.hurtTime >= 6 && mc.thePlayer.ticksExisted % 2 == 0) {
-					e.setPosY(e.getPosY() + offset);
-					e.setOnGround(false);
-				} else
-					return;
-			}
-			
-			target = null;
-		}
     }
 }
