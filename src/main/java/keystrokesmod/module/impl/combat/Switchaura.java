@@ -37,6 +37,7 @@ public class Switchaura extends Module {
     private SliderSetting aps;
     public SliderSetting autoBlockMode;
     private SliderSetting fov;
+    private SliderSetting getTargetEvent;
     private SliderSetting rangeType;
     private SliderSetting searchTargetType;
     public SliderSetting attackRange;
@@ -62,12 +63,13 @@ public class Switchaura extends Module {
     private ButtonSetting requireMouseDown;
     private ButtonSetting silentSwing;
     private ButtonSetting weaponOnly;
-    private String[] autoBlockModes = new String[]{"Manual", "Vanilla", "Post", "Swap", "Interact", "Fake", "Partial", "Vanilla2"}; // ignore the "vanilla2" ab, lol
-    private String[] rangeTypes = new String[]{"Normal", "Hypixel"};
-    private String[] searchTargetTypes = new String[]{"ForEach", "ForLoop", "Stream"}; // very useless, but idk
-    private String[] rotationModes = new String[]{"None", "Silent", "Lock view"};
-    private String[] sortModes = new String[]{"Health", "Hurttime", "Distance", "Yaw"};
-    private String[] moveFixModes = new String[]{"None", "Normal"};
+    private final String[] autoBlockModes = new String[]{"Manual", "Vanilla", "Post", "Swap", "Interact", "Fake", "Partial", "Vanilla2"}; // ignore the "vanilla2" ab, lol
+    private final String[] getTargetEvents = new String[]{"Tick", "RenderTick", "PreMotion", "PreUpdate"};
+    private final String[] rangeTypes = new String[]{"Normal", "Hypixel"};
+    private final String[] searchTargetTypes = new String[]{"ForEach", "ForLoop", "Stream"}; // very useless, but idk
+    private final String[] rotationModes = new String[]{"None", "Silent", "Lock view"};
+    private final String[] sortModes = new String[]{"Health", "Hurttime", "Distance", "Yaw"};
+    private final String[] moveFixModes = new String[]{"None", "Normal"};
     private List<EntityLivingBase> availableTargets = new ArrayList<>();
     public AtomicBoolean block = new AtomicBoolean();
     private long lastSwitched = System.currentTimeMillis();
@@ -101,6 +103,7 @@ public class Switchaura extends Module {
         this.registerSetting(aps = new SliderSetting("APS", 16.0, 1.0, 20.0, 0.5));
         this.registerSetting(autoBlockMode = new SliderSetting("Autoblock", autoBlockModes, 0));
         this.registerSetting(fov = new SliderSetting("FOV", 360.0, 30.0, 360.0, 4.0));
+        this.registerSetting(getTargetEvent = new SliderSetting("GetTarget Event", getTargetEvents, 0));
         this.registerSetting(rangeType = new SliderSetting("Range Type", rangeTypes, 0)); // :skull:
         this.registerSetting(searchTargetType = new SliderSetting("Search Target Type", searchTargetTypes, 0));
         this.registerSetting(attackRange = new SliderSetting("Range (attack)", 3.0, 3.0, 6.0, 0.05));
@@ -137,14 +140,25 @@ public class Switchaura extends Module {
 
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    public void onTick(TickEvent e) {
+        if (getTargetEvent.getInput() == 0)
+            setTarget();
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderTick(TickEvent.RenderTickEvent ev) {
         if (!Utils.nullCheck()) {
             return;
         }
+
+        if (getTargetEvent.getInput() == 1)
+            setTarget();
+
         if (ev.phase != TickEvent.Phase.START) {
             return;
         }
+
         if (canAttack()) {
             attack = true;
         }
@@ -162,12 +176,15 @@ public class Switchaura extends Module {
         }
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPreUpdate(PreUpdateEvent e) {
         if (!basicCondition() || !settingCondition()) {
             resetVariables();
             return;
         }
+
+        if (getTargetEvent.getInput() == 3)
+            setTarget();
 
         if (nobadpackets.isToggled() && isSent)
             return;
@@ -249,13 +266,17 @@ public class Switchaura extends Module {
 				}
             }
             return;
-        }
-        else if (blinking || lag) {
+        } else if (blinking || lag) {
             resetBlinkState(true);
         }
         if (target == null) {
             return;
+        } else if (ModuleManager.antiFireball.fireball != null) {
+            Utils.attackEntity(ModuleManager.antiFireball.fireball, swingWhileBlocking, !swingWhileBlocking);
+            isSent = true;
         }
+
+
         if (attack) {
             resetBlinkState(true);
             attack = false;
@@ -268,13 +289,16 @@ public class Switchaura extends Module {
         }
     }
 
-    @SubscribeEvent(priority = EventPriority.LOW)
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onPreMotion(PreMotionEvent e) {
         if (!basicCondition() || !settingCondition()) {
             resetVariables();
             return;
         }
-        setTarget(new float[]{e.getYaw(), e.getPitch()});
+
+        if (getTargetEvent.getInput() == 2)
+            setTarget();
+
         if (target != null && rotationMode.getInput() == 1) {
             rotations = RotationUtils.getRotations(target, e.getYaw(), e.getPitch());
             if (rotationSmoothing.getInput() > 0) {
@@ -491,7 +515,7 @@ public class Switchaura extends Module {
         blocking = Reflection.setBlocking(state);
     }
 
-    private void setTarget(float[] rotations) {
+    private void setTarget() {
         availableTargets.clear();
         block.set(false);
         swing = false;
