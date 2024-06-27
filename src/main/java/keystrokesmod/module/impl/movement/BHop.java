@@ -20,7 +20,7 @@ public class BHop extends Module {
     public BHop() {
         super("Bhop", category.movement);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
-        this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 10.0, 0.1));
+        this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 8.0, 0.1));
         this.registerSetting(autoJump = new ButtonSetting("Auto jump", true));
         this.registerSetting(liquidDisable = new ButtonSetting("Disable in liquid", true));
         this.registerSetting(sneakDisable = new ButtonSetting("Disable while sneaking", true));
@@ -72,13 +72,13 @@ public class BHop extends Module {
             case 2:
                 if (Utils.isMoving()) {
                     if (mc.thePlayer.onGround && autoJump.isToggled()) {
-                        mc.thePlayer.jump();  // Executa o pulo normal
+                        mc.thePlayer.jump();
 
                         if (mc.thePlayer.isCollidedHorizontally) {
 
                         }
                         else{
-                            mc.thePlayer.motionY *= 0.4;
+                            mc.thePlayer.motionY *= 0.2;
                         }
                     }
                     mc.thePlayer.setSprinting(true);
