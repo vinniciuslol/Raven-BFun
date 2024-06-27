@@ -3,6 +3,7 @@ package keystrokesmod.module.impl.player;
 import keystrokesmod.event.PreMotionEvent;
 import keystrokesmod.event.PreUpdateEvent;
 import keystrokesmod.module.Module;
+import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.render.HUD;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
@@ -43,7 +44,7 @@ public class Scaffold extends Module {
     private MovingObjectPosition placeBlock;
     private int lastSlot;
     private String[] rotationModes = new String[]{"None", "Backwards", "Strict", "Raytrace"};
-    private String[] fastScaffoldModes = new String[]{"Disabled", "Sprint", "Edge", "Jump", "Float"};
+    private String[] fastScaffoldModes = new String[]{"Disabled", "Sprint", "Edge", "Jump", "MushMC"};
     public float placeYaw;
     public float placePitch;
     public int at;
@@ -112,7 +113,16 @@ public class Scaffold extends Module {
                 event.setPitch(85);
             }
         }
+        switch ((int) fastScaffold.getInput()){
+            case 4:
+                mc.thePlayer.setSprinting(true);
+                Utils.setSpeed(Utils.getHorizontalSpeed() + 0.005 * 10);
+                mc.thePlayer.motionY *= 0.1;
+                break;
+        }
     }
+
+
 
     @SubscribeEvent
     public void onPreUpdate(PreUpdateEvent e) { // place here
@@ -334,7 +344,7 @@ public class Scaffold extends Module {
                     return Utils.onEdge();
                 case 3:
                 case 4:
-                    return keepYPosition();
+
             }
         }
         return false;

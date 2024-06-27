@@ -37,6 +37,7 @@ public class ModuleManager {
     public static BedESP bedESP;
     public static HUD hud;
     public static Module timer;
+    public static PlayerCircle playerCircle;
     public static Module fly;
     public static Potions potions;
     public static TargetHUD targetHUD;
@@ -57,6 +58,7 @@ public class ModuleManager {
     public void register() {
         this.addModule(autoClicker = new LeftClicker());
         this.addModule(new LongJump());
+        this.addModule(new PlayerCircle());
         this.addModule(new AimAssist());
         this.addModule(new Derp());
         this.addModule(new Blink());

@@ -26,6 +26,7 @@ import java.io.IOException;
 
 public class HUD extends Module {
     public static SliderSetting theme;
+    public static SliderSetting alignw;
     public static ButtonSetting dropShadow;
     public static ButtonSetting alphabeticalSort;
     private static ButtonSetting alignRight;
@@ -40,11 +41,12 @@ public class HUD extends Module {
     public HUD() {
         super("HUD", category.render);
         this.registerSetting(new DescriptionSetting("Right click bind to hide modules."));
-        this.registerSetting(theme = new SliderSetting("Theme", Theme.themes, 2));
         this.registerSetting(new ButtonSetting("Edit position", () -> {
             mc.displayGuiScreen(new EditScreen());
         }));
         this.registerSetting(watermark = new ButtonSetting("Watermark", true));
+        this.registerSetting(alignw = new SliderSetting("Align", 73, 1.0, 200.0, 0.1));
+        this.registerSetting(theme = new SliderSetting("Color Theme", Theme.themes, 1));
         this.registerSetting(alignRight = new ButtonSetting("Align right", false));
         this.registerSetting(alphabeticalSort = new ButtonSetting("Alphabetical sort", false));
         this.registerSetting(dropShadow = new ButtonSetting("Drop shadow", true));
@@ -89,7 +91,7 @@ public class HUD extends Module {
             int n32 = hudX + 60;
             int ne = hudY - 19;
 
-            int n322 = hudX + 73;
+            int n322 = hudX + ((int)alignw.getInput());
             int ne2 = hudY - 12;
             double n22 = 1.0;
             int ee = Theme.getGradient((int) theme.getInput(), n22);
@@ -230,6 +232,38 @@ public class HUD extends Module {
         }
 
         private int[] d(FontRenderer fr, String t) {
+
+            int n33 = hudX;
+            int n32 = hudX + 60;
+            int ne = hudY - 19;
+
+            int n322 = hudX + ((int)alignw.getInput());
+            int ne2 = hudY - 12;
+            double n22 = 1.0;
+            int ee = Theme.getGradient((int) theme.getInput(), n22);
+
+            if (watermark.isToggled()) {
+
+                String bFunText = "§l[BFun]";
+                String ravenText = "§lRaven";
+
+                mc.fontRendererObj.drawString(bFunText, n322, (float) ne2, ee, dropShadow.isToggled());
+
+
+                float scale = 2.0f;
+                GL11.glPushMatrix();
+                GL11.glScalef(scale, scale, scale);
+
+
+                float scaledN33 = n33 / scale;
+                float scaledNe = ne / scale;
+
+                mc.fontRendererObj.drawString(ravenText, scaledN33, scaledNe, ee, dropShadow.isToggled());
+
+                // Restaurar a matriz de transformação original
+                GL11.glPopMatrix();
+            }
+
             if (empty()) {
                 int x = this.miX;
                 int y = this.miY;
