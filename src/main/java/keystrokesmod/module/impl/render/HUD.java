@@ -89,7 +89,7 @@ public class HUD extends Module {
             int n32 = hudX + 60;
             int ne = hudY - 19;
 
-            int n322 = hudX + 68;
+            int n322 = hudX + 75;
             int ne2 = hudY - 12;
             double n22 = 1.0;
             int ee = Theme.getGradient((int) theme.getInput(), n22);

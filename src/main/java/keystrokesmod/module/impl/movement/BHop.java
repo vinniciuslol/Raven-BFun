@@ -14,13 +14,13 @@ public class BHop extends Module {
     private ButtonSetting liquidDisable;
     private ButtonSetting sneakDisable;
     private ButtonSetting stopMotion;
-    private String[] modes = new String[]{"Strafe", "Ground"};
+    private String[] modes = new String[]{"Strafe", "Ground", "MushMC"};
     public boolean hopping;
 
     public BHop() {
         super("Bhop", category.movement);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
-        this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 8.0, 0.1));
+        this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 10.0, 0.1));
         this.registerSetting(autoJump = new ButtonSetting("Auto jump", true));
         this.registerSetting(liquidDisable = new ButtonSetting("Disable in liquid", true));
         this.registerSetting(sneakDisable = new ButtonSetting("Disable while sneaking", true));
@@ -67,6 +67,24 @@ public class BHop extends Module {
                     }
                     Utils.setSpeed(horizontalSpeed);
                     hopping = true;
+                }
+                break;
+            case 2:
+                if (Utils.isMoving()) {
+                    if (mc.thePlayer.onGround && autoJump.isToggled()) {
+                        mc.thePlayer.jump();  // Executa o pulo normal
+
+                        if (mc.thePlayer.isCollidedHorizontally) {
+
+                        }
+                        else{
+                            mc.thePlayer.motionY *= 0.4;
+                        }
+                    }
+                    mc.thePlayer.setSprinting(true);
+                    Utils.setSpeed(Utils.getHorizontalSpeed() + 0.005 * speed.getInput());
+                    hopping = true;
+                    break;
                 }
                 break;
         }
