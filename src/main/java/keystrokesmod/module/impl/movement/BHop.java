@@ -78,7 +78,7 @@ public class BHop extends Module {
 
                         }
                         else{
-                            mc.thePlayer.motionY *= 0.2;
+                            mc.thePlayer.motionY *= 0.1;
 
                         }
                     }
