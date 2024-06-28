@@ -6,7 +6,6 @@ import keystrokesmod.module.Module;
 import keystrokesmod.module.impl.ghost.Reach;
 import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.impl.other.AntiBot;
-import keystrokesmod.module.impl.other.AntiBot;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.*;
