@@ -36,10 +36,8 @@ public abstract class MixinNetworkManager {
 
         if (ModuleManager.tweaks.isEnabled() && ModuleManager.tweaks.optimizeBlockhit.isToggled()) {
             if (sendPacketEvent.getPacket() instanceof C08PacketPlayerBlockPlacement || sendPacketEvent.getPacket() instanceof C07PacketPlayerDigging)
-                if (this.isChannelOpen()) {
-                    this.channel.writeAndFlush(sendPacketEvent.getPacket());
+                if (this.isChannelOpen())
                     this.channel.flush();
-                }
         }
 
         if (sendPacketEvent.isCanceled()) {

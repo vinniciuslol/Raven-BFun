@@ -5,6 +5,7 @@ import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.RenderUtils;
 import keystrokesmod.utility.Utils;
+import keystrokesmod.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.apache.commons.lang3.RandomUtils;
@@ -18,7 +19,7 @@ public class Fly extends Module {
     private ButtonSetting stopMotion;
     private boolean d;
     private boolean a = false;
-    private String[] modes = new String[]{"Vanilla", "Fast", "Fast 2"};
+    private String[] modes = new String[]{"Vanilla", "Fast", "Fast 2", "MushGlide"};
 
     public Fly() {
         super("Fly", category.movement);
@@ -70,10 +71,18 @@ public class Fly extends Module {
                 }
                 mc.thePlayer.motionY = 0.0;
                 setSpeed(0.4 * horizontalSpeed.getInput());
-                break;
         }
-
     }
+	
+	@SubscribeEvent
+	public void onPreMotion(PreMotionEvent e) {
+		if (mode.getInput() == 3) {
+            if (mc.thePlayer.ticksExisted % 13 == 0)
+                return;
+
+            mc.thePlayer.motionY *= 0.8;
+        }
+	}
 
     public void onDisable() {
         if (mc.thePlayer.capabilities.allowFlying) {

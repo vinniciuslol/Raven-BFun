@@ -132,12 +132,10 @@ public class LongJump extends Module {
                 }
                 break;
             case 2:
-                if (mc.thePlayer.ticksExisted % 15 == 0) {
-                    this.disable();
-                    break;
-                }
-
-                mc.thePlayer.motionY *= 0.7;
+                if (mc.thePlayer.onGround)
+                    mc.thePlayer.motionY += 0.55;
+                this.disable();
+                break;
         }
     }
 
