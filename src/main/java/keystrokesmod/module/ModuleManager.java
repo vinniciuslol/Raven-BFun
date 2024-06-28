@@ -55,6 +55,7 @@ public class ModuleManager {
     public static NoHurtCam noHurtCam;
     public static Scaffold scaffold;
     public static Module noMissClick;
+    public static Tweaks tweaks;
 
     public void register() {
         this.addModule(autoClicker = new LeftClicker());
@@ -67,7 +68,7 @@ public class ModuleManager {
         this.addModule(new BurstClicker());
         this.addModule(new ClickAssist());
         this.addModule(tower = new Tower());
-        this.addModule(new Tweaks());
+        this.addModule(tweaks = new Tweaks());
         this.addModule(hitBox = new HitBox());
         this.addModule(new Radar());
         this.addModule(new Settings());

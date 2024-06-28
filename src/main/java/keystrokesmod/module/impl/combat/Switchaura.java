@@ -141,6 +141,9 @@ public class Switchaura extends Module {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onTick(TickEvent e) {
+        if (mc.thePlayer == null)
+            return;
+
         if (getTargetEvent.getInput() == 0)
             setTarget();
     }
@@ -150,6 +153,9 @@ public class Switchaura extends Module {
         if (!Utils.nullCheck()) {
             return;
         }
+
+        if (mc.thePlayer == null)
+            return;
 
         if (getTargetEvent.getInput() == 1)
             setTarget();

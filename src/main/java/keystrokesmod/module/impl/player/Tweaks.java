@@ -8,13 +8,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 public class Tweaks extends Module {
-    public static ButtonSetting removeHitDelay, removeBlockhitDelay, removeJumpTicks;
+    public ButtonSetting removeHitDelay, removeBlockhitDelay, removeJumpTicks, optimizeBlockhit;
 
     public Tweaks() {
         super("Tweaks", category.player, 0);
         this.registerSetting(removeHitDelay = new ButtonSetting("Remove Hit Delay", true));
         this.registerSetting(removeBlockhitDelay = new ButtonSetting("Remove Blockhit Delay", false));
         this.registerSetting(removeJumpTicks = new ButtonSetting("Remove jump ticks", false));
+        this.registerSetting(optimizeBlockhit = new ButtonSetting("Optimize Blockhit", true));
     }
 
     @SubscribeEvent

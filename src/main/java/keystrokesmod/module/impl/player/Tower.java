@@ -6,6 +6,7 @@ import keystrokesmod.module.ModuleManager;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.DescriptionSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
+import keystrokesmod.utility.Reflection;
 import keystrokesmod.utility.Utils;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -38,12 +39,15 @@ public class Tower extends Module {
 	}
 
     @SubscribeEvent
-    public void onPreMotion(PreMotionEvent e) {
+    public void onPreMotion(PreMotionEvent e) throws IllegalAccessException {
         if (canTower()) {
             Utils.setSpeed(Math.max((diagonal() ? diagonalSpeed.getInput() : speed.getInput()) * 0.1 - 0.25, 0));
             if ((int) mode.getInput() == 0) {
                 mc.thePlayer.jump();
             } else if (mode.getInput() == 1) {
+                if (!ModuleManager.tweaks.isEnabled() || (ModuleManager.tweaks.isEnabled() && !ModuleManager.tweaks.removeJumpTicks.isToggled()))
+                    Reflection.jumpTicks.set(mc.thePlayer, 0);
+
                 double amount = Math.random() * 0.000000001;
 
                 int stateY = (int) Math.round((e.getPosY() % 1) * 10000);

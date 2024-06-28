@@ -31,7 +31,7 @@ public class LongJump extends Module {
     private boolean sentPlace;
     private int initTicks;
     private boolean threw;
-    private String[] modes = new String[]{"Fireball", "Fireball Auto"};
+    private String[] modes = new String[]{"Fireball", "Fireball Auto", "Mush"};
     public LongJump() {
         super("Long Jump", category.movement);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
@@ -68,70 +68,76 @@ public class LongJump extends Module {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onPreMotion(PreMotionEvent e) {
-        if (!Utils.nullCheck()) {
-            return;
-        }
-        if (mode.getInput() == 1) {
-            if (initTicks == 0) {
-                if (invertYaw.isToggled()) {
-                    e.setYaw(mc.thePlayer.rotationYaw - 180);
-                    e.setPitch(89);
+        switch ((int) mode.getInput()) {
+            case 0:
+                if (setSpeed) {
+                    if (ticks > motionTicks.getInput()) {
+                        stopModules = setSpeed = false;
+                        ticks = 0;
+                        if (stopMotion.isToggled()) {
+                            mc.thePlayer.motionX = 0;
+                            mc.thePlayer.motionY = 0;
+                            mc.thePlayer.motionZ = 0;
+                        }
+                        return;
+                    }
+                    stopModules = true;
+                    ticks++;
+                    setSpeed();
                 }
-                else {
-                    e.setPitch(90);
+                break;
+            case 1:
+                if (initTicks == 0) {
+                    if (invertYaw.isToggled()) {
+                        e.setYaw(mc.thePlayer.rotationYaw - 180);
+                        e.setPitch(89);
+                    }
+                    else {
+                        e.setPitch(90);
+                    }
+                    int fireballSlot = getFireball();
+                    if (fireballSlot != -1 && fireballSlot != mc.thePlayer.inventory.currentItem) {
+                        lastSlot = mc.thePlayer.inventory.currentItem;
+                        mc.thePlayer.inventory.currentItem = fireballSlot;
+                    }
                 }
-                int fireballSlot = getFireball();
-                if (fireballSlot != -1 && fireballSlot != mc.thePlayer.inventory.currentItem) {
-                    lastSlot = mc.thePlayer.inventory.currentItem;
-                    mc.thePlayer.inventory.currentItem = fireballSlot;
+                else if (initTicks == 1) {
+                    if (!sentPlace) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        sentPlace = true;
+                    }
                 }
-            }
-            else if (initTicks == 1) {
-                if (!sentPlace) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
-                    sentPlace = true;
+                else if (initTicks == 2) {
+                    if (lastSlot != -1) {
+                        mc.thePlayer.inventory.currentItem = lastSlot;
+                        lastSlot = -1;
+                    }
                 }
-            }
-            else if (initTicks == 2) {
-                if (lastSlot != -1) {
-                    mc.thePlayer.inventory.currentItem = lastSlot;
-                    lastSlot = -1;
-                }
-            }
-            if (ticks > motionTicks.getInput()) {
-                if (stopMotion.isToggled()) {
-                    mc.thePlayer.motionX = 0;
-                    mc.thePlayer.motionY = 0;
-                    mc.thePlayer.motionZ = 0;
-                }
-                this.disable();
-                return;
-            }
-            if (setSpeed) {
-                stopModules = true;
-                setSpeed();
-                ticks++;
-            }
-            if (initTicks < 3) {
-                initTicks++;
-            }
-        }
-        else {
-            if (setSpeed) {
                 if (ticks > motionTicks.getInput()) {
-                    stopModules = setSpeed = false;
-                    ticks = 0;
                     if (stopMotion.isToggled()) {
                         mc.thePlayer.motionX = 0;
                         mc.thePlayer.motionY = 0;
                         mc.thePlayer.motionZ = 0;
                     }
+                    this.disable();
                     return;
                 }
-                stopModules = true;
-                ticks++;
-                setSpeed();
-            }
+                if (setSpeed) {
+                    stopModules = true;
+                    setSpeed();
+                    ticks++;
+                }
+                if (initTicks < 3) {
+                    initTicks++;
+                }
+                break;
+            case 2:
+                if (mc.thePlayer.ticksExisted % 15 == 0) {
+                    this.disable();
+                    break;
+                }
+
+                mc.thePlayer.motionY *= 0.7;
         }
     }
 
