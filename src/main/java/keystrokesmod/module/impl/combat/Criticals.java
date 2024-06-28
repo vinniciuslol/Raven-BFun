@@ -50,7 +50,7 @@ public class Criticals extends Module {
 			case 1:
 				double[] offset = new double[]{30.9999E-6F, 40.9999E-7F, 50.9999E-8F, 60.9999E-9F, 0, 0, 0};
 				
-				if (((EntityLivingBase) e.target).hurtTime >= 5 && mc.thePlayer.ticksExisted % 10 == 0)
+				if (((EntityLivingBase) e.target).hurtTime >= 5 && mc.thePlayer.ticksExisted % 12 == 0)
 					for (double o : offset)
 						mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + o, mc.thePlayer.posZ, false));
 				break;
