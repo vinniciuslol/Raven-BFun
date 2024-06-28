@@ -6,6 +6,9 @@ import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.script.Script;
 import keystrokesmod.utility.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -103,6 +106,10 @@ public class Module {
     }
 
     public void enable() {
+
+        // SOUUND
+
+
         if (!this.canBeEnabled() || this.isEnabled()) {
             return;
         }
@@ -121,7 +128,11 @@ public class Module {
         }
     }
 
+
     public void disable() {
+
+        // SOUND
+
         if (!this.isEnabled()) {
             return;
         }
@@ -135,6 +146,7 @@ public class Module {
             this.onDisable();
         }
     }
+    
 
     public String getInfo() {
         return "";

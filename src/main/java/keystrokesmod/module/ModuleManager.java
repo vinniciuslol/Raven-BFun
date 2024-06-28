@@ -30,6 +30,7 @@ public class ModuleManager {
     public static Derp Derp;
     public static Module antiBot;
     public static Module noSlow;
+    public static FastUse fastUse;
     public static Switchaura killAura;
     public static Module autoClicker;
     public static Module hitBox;
@@ -58,6 +59,7 @@ public class ModuleManager {
     public void register() {
         this.addModule(autoClicker = new LeftClicker());
         this.addModule(new LongJump());
+        this.addModule(new FastUse());
         this.addModule(new PlayerCircle());
         this.addModule(new AimAssist());
         this.addModule(new Derp());

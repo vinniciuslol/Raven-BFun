@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
+import org.lwjgl.opengl.Display;
 
 @Mod(
         modid = "keystrokes",
@@ -110,7 +111,7 @@ public class Raven {
                 mc.displayGuiScreen(new KeyStrokeConfigGui());
             }
 
-            ModuleManager.hud.enable();
+            Display.setTitle("Raven BFun | Minecraft 1.8.9");
         }
     }
 

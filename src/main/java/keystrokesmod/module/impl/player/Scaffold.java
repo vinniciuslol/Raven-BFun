@@ -116,7 +116,6 @@ public class Scaffold extends Module {
         switch ((int) fastScaffold.getInput()){
             case 4:
                 mc.thePlayer.setSprinting(true);
-                Utils.setSpeed(Utils.getHorizontalSpeed() + 0.005 * 10);
                 mc.thePlayer.motionY *= 0.1;
                 break;
         }
