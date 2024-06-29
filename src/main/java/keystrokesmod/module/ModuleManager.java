@@ -43,6 +43,7 @@ public class ModuleManager {
     public static Module fly;
     public static Potions potions;
     public static TargetHUD targetHUD;
+    public static Trajectories trajectories;
     public static NoFall noFall;
     public static PlayerESP playerESP;
     public static Module reduce;
@@ -69,6 +70,7 @@ public class ModuleManager {
         this.addModule(new BurstClicker());
         this.addModule(new ClickAssist());
         this.addModule(new Peformance());
+        this.addModule(new Trajectories());
         this.addModule(tower = new Tower());
         this.addModule(tweaks = new Tweaks());
         this.addModule(hitBox = new HitBox());
@@ -136,7 +138,6 @@ public class ModuleManager {
         this.addModule(new Manager());
         this.addModule(new ViewPackets());
         this.addModule(new Gui());
-        this.addModule(new Shaders());
         antiBot.enable();
         Collections.sort(this.modules, Comparator.comparing(Module::getName));
     }
