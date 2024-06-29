@@ -27,6 +27,7 @@ public class Peformance extends Module {
         Minecraft.getMinecraft().gameSettings.fancyGraphics = false;
         Minecraft.getMinecraft().gameSettings.useVbo = true;
         Minecraft.getMinecraft().guiAchievement.clearAchievements();
+        Minecraft.getMinecraft().gameSettings.entityShadows = false;
     }
 
 
