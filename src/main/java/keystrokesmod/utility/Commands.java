@@ -3,8 +3,7 @@ package keystrokesmod.utility;
 import keystrokesmod.Raven;
 import keystrokesmod.module.Module;
 import keystrokesmod.module.impl.client.Settings;
-import keystrokesmod.module.impl.ghost.Velocity;
-import keystrokesmod.module.impl.movement.BHop;
+import keystrokesmod.module.impl.movement.Speed;
 import keystrokesmod.module.impl.movement.Fly;
 import keystrokesmod.module.impl.other.NameHider;
 import keystrokesmod.utility.profile.Profile;
@@ -86,7 +85,7 @@ public class Commands {
                         Fly.horizontalSpeed.setValueRaw(value);
                         break;
                     case "bhop":
-                        BHop.speed.setValueRaw(value);
+                        Speed.speed.setValueRaw(value);
                         break;
                     default:
                         print(invSyn, 1);
@@ -117,20 +116,6 @@ public class Commands {
                 if (value > 300 || value < -100) {
                     print("&cInvalid value. [-100 - 300]", 1);
                     return;
-                }
-
-                switch (args[1]) {
-                    case "horizontal":
-                    case "h":
-                        Velocity.horizontal.setValueRaw(value);
-                        break;
-                    case "vertical":
-                    case "v":
-                        Velocity.vertical.setValueRaw(value);
-                        break;
-                    default:
-                        print(invSyn, 1);
-                        return;
                 }
 
                 print("&aSet " + args[1] + " velocity to ", 1);

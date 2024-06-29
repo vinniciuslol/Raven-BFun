@@ -17,14 +17,19 @@ public class Criticals extends Module {
 	
 	private EntityLivingBase target;
 
-    private final String[] modes = new String[]{"Packet", "Mush", "NoGround", "Packet2"};
+    private final String[] modes = new String[]{"Packet", "Cris", "NoGround", "Packet2"};
 
     public Criticals() {
         super("Criticals", category.combat, 0);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 2));
 		this.registerSetting(onlyGround = new ButtonSetting("Only Setting", false));
     }
-	
+
+	@Override
+	public String getInfo() {
+		return modes[(int) mode.getInput()];
+	}
+
 	@Override
 	public void onDisable() {
 		target = null;

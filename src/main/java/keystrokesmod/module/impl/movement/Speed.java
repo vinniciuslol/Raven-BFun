@@ -4,21 +4,20 @@ import keystrokesmod.module.Module;
 import keystrokesmod.module.setting.impl.ButtonSetting;
 import keystrokesmod.module.setting.impl.SliderSetting;
 import keystrokesmod.utility.Utils;
-import net.minecraftforge.event.world.BlockEvent;
 import org.lwjgl.input.Keyboard;
 
-public class BHop extends Module {
+public class Speed extends Module {
     private SliderSetting mode;
     public static SliderSetting speed;
     private ButtonSetting autoJump;
     private ButtonSetting liquidDisable;
     private ButtonSetting sneakDisable;
     private ButtonSetting stopMotion;
-    private String[] modes = new String[]{"Strafe", "Ground", "MushMC"};
+    private String[] modes = new String[]{"Strafe", "Ground", "Cris"};
     public boolean hopping;
 
-    public BHop() {
-        super("Bhop", category.movement);
+    public Speed() {
+        super("Speed", category.movement);
         this.registerSetting(mode = new SliderSetting("Mode", modes, 0));
         this.registerSetting(speed = new SliderSetting("Speed", 2.0, 0.5, 8.0, 0.1));
         this.registerSetting(autoJump = new ButtonSetting("Auto jump", true));

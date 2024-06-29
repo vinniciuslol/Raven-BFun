@@ -4,7 +4,6 @@ import keystrokesmod.module.impl.client.CommandLine;
 import keystrokesmod.module.impl.client.Gui;
 import keystrokesmod.module.impl.client.Settings;
 import keystrokesmod.module.impl.combat.*;
-import keystrokesmod.module.impl.ghost.*;
 import keystrokesmod.module.impl.movement.*;
 import keystrokesmod.module.impl.other.*;
 import keystrokesmod.module.impl.player.*;
@@ -30,7 +29,6 @@ public class ModuleManager {
     public static Derp Derp;
     public static Module antiBot;
     public static Module noSlow;
-    public static FastUse fastUse;
     public static Peformance peformance;
     public static Switchaura killAura;
     public static Module autoClicker;
@@ -53,33 +51,24 @@ public class ModuleManager {
     public static Tower tower;
     public static NoCameraClip noCameraClip;
     public static Module bedwars;
-    public static BHop bHop;
+    public static Speed bHop;
     public static NoHurtCam noHurtCam;
     public static Scaffold scaffold;
     public static Module noMissClick;
     public static Tweaks tweaks;
 
     public void register() {
-        this.addModule(autoClicker = new LeftClicker());
         this.addModule(new LongJump());
-        this.addModule(new FastUse());
         this.addModule(new PlayerCircle());
-        this.addModule(new AimAssist());
         this.addModule(new Derp());
         this.addModule(new Blink());
-        this.addModule(new BurstClicker());
-        this.addModule(new ClickAssist());
         this.addModule(new Peformance());
         this.addModule(new Trajectories());
         this.addModule(tower = new Tower());
         this.addModule(tweaks = new Tweaks());
-        this.addModule(hitBox = new HitBox());
         this.addModule(new Radar());
         this.addModule(new Settings());
-        this.addModule(reach = new Reach());
-        this.addModule(new RodAimbot());
-        this.addModule(new Velocity());
-        this.addModule(bHop = new BHop());
+        this.addModule(bHop = new Speed());
         this.addModule(new InvManager());
         this.addModule(scaffold = new Scaffold());
         this.addModule(new AntiAFK());
@@ -87,7 +76,6 @@ public class ModuleManager {
         this.addModule(noHurtCam = new NoHurtCam());
         this.addModule(fly = new Fly());
         this.addModule(new InvMove());
-
         this.addModule(potions = new Potions());
         this.addModule(new AutoSwap());
         this.addModule(keepSprint = new KeepSprint());
@@ -105,9 +93,7 @@ public class ModuleManager {
         this.addModule(antiBot = new AntiBot());
         this.addModule(antiShuffle = new AntiShuffle());
         this.addModule(new Chams());
-        this.addModule(new TriggerBot());
         this.addModule(new ChestESP());
-        this.addModule(new RightClicker());
         this.addModule(new Nametags());
 		this.addModule(new Step());
 		this.addModule(new Spider());
@@ -117,7 +103,6 @@ public class ModuleManager {
         this.addModule(new Anticheat());
 		this.addModule(new AutoHeal());
         this.addModule(new MoreKB());
-        this.addModule(noMissClick = new NoMissClick());
         this.addModule(new Criticals());
         this.addModule(new BreakProgress());
         this.addModule(new Xray());
@@ -134,7 +119,6 @@ public class ModuleManager {
         this.addModule(new WaterBucket());
         this.addModule(commandLine = new CommandLine());
         this.addModule(fastMine = new FastMine());
-        this.addModule(new JumpReset());
         this.addModule(new FastPlay());
         this.addModule(new Manager());
         this.addModule(new ViewPackets());

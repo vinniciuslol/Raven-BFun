@@ -211,7 +211,6 @@ public class Module {
     public enum category {
         client,
         combat,
-        ghost,
         movement,
         other,
         player,
