@@ -135,6 +135,7 @@ public class ModuleManager {
         this.addModule(commandLine = new CommandLine());
         this.addModule(fastMine = new FastMine());
         this.addModule(new JumpReset());
+        this.addModule(new FastPlay());
         this.addModule(new Manager());
         this.addModule(new ViewPackets());
         this.addModule(new Gui());

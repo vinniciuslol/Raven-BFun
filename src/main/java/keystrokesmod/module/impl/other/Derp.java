@@ -21,7 +21,6 @@ public class Derp extends Module {
 
     @SubscribeEvent
     public void onPreMotion(PreMotionEvent e) {
-
         headYawOffset += speed.getInput();
 
 
