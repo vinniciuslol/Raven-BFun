@@ -31,6 +31,7 @@ public class ModuleManager {
     public static Module antiBot;
     public static Module noSlow;
     public static FastUse fastUse;
+    public static Peformance peformance;
     public static Switchaura killAura;
     public static Module autoClicker;
     public static Module hitBox;
@@ -67,6 +68,7 @@ public class ModuleManager {
         this.addModule(new Blink());
         this.addModule(new BurstClicker());
         this.addModule(new ClickAssist());
+        this.addModule(new Peformance());
         this.addModule(tower = new Tower());
         this.addModule(tweaks = new Tweaks());
         this.addModule(hitBox = new HitBox());
@@ -83,7 +85,7 @@ public class ModuleManager {
         this.addModule(noHurtCam = new NoHurtCam());
         this.addModule(fly = new Fly());
         this.addModule(new InvMove());
-        this.addModule(new Trajectories());
+
         this.addModule(potions = new Potions());
         this.addModule(new AutoSwap());
         this.addModule(keepSprint = new KeepSprint());
@@ -124,7 +126,6 @@ public class ModuleManager {
         this.addModule(new keystrokesmod.script.Manager());
         this.addModule(killAura = new Switchaura());
         this.addModule(new ItemESP());
-        this.addModule(new MobESP());
         this.addModule(new NoRotate());
         this.addModule(nameHider = new NameHider());
         this.addModule(new FakeLag());
